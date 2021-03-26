@@ -16,28 +16,25 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package demo.inspector
+package demo.runaround
 
 import com.zynaps.parallax.system.LogLevel
 import com.zynaps.parallax.system.Logger
+import java.awt.Font
 import java.io.IOException
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 import kotlin.system.exitProcess
 
-object Program {
-
-    @JvmStatic
-    fun main(args: Array<String>) {
-        Logger.level = LogLevel.INFO
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
-        SwingUtilities.invokeLater {
-            try {
-                MainFrame().isVisible = true
-            } catch (e: IOException) {
-                Logger.error(e)
-                exitProcess(0)
-            }
+fun main() {
+    Logger.level = LogLevel.DEBUG
+    UIManager.put("Menu.font", Font("Space Mono", Font.PLAIN, 15))
+    SwingUtilities.invokeLater {
+        try {
+            MainFrame().start()
+        } catch (e: IOException) {
+            Logger.error(e)
+            exitProcess(0)
         }
     }
 }

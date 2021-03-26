@@ -29,8 +29,10 @@ data class Aabb(private var min: Vector3 = POSITIVE_INFINITY, private var max: V
     val width get() = max.x - min.x
     val height get() = max.y - min.y
     val depth get() = max.z - min.z
+
     val center get() = Vector3((min.x + max.x) * 0.5F, (min.y + max.y) * 0.5F, (min.z + max.z) * 0.5F)
     val radius get() = sqrt(sqr(max.x - min.x) + sqr(max.y - min.y) + sqr(max.z - min.z)) * 0.5F
+
     val minimum get() = min
     val maximum get() = max
 

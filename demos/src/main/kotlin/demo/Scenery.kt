@@ -36,7 +36,6 @@ import demo.runaround.components.RandomSpinNode
 import kotlin.random.Random
 
 class Scenery(private val sceneGraph: SceneGraph, private val loader: ResourceLoader) {
-
     private val blueTiles = Material.Builder().name("Blue Tiles").diffuse(Samplers.Checker(0xC5D2FF, 0x7D87D5, 8.0F)).build()
     private val greenTiles = Material.Builder().name("Green Tiles").diffuse(Samplers.Checker(0x6FAA0D, 0x5F930E)).build()
     private val yellowTiles = Material.Builder().name("Yellow Tiles").diffuse(Samplers.Checker(0xFFF787, 0xFFD51B, 8.0F)).build()
@@ -47,21 +46,14 @@ class Scenery(private val sceneGraph: SceneGraph, private val loader: ResourceLo
     private val sphere = Primitives.sphere(yellowTiles).compile()
     private val capsule = Primitives.capsule(purpleTiles).compile()
 
-    fun addPlane(offset: Float = -10.0F, scale: Float = 400.0F) {
+    fun addPlane(offset: Float = -10.0F, scale: Float = 400.0F) =
         sceneGraph.root.add(plane.toGraph(Matrix4.createTranslation(0.0F, offset, 0.0F) * Matrix4.createScale(scale, scale, scale)))
-    }
 
-    fun addCube(scale: Float = 1.0F) {
-        sceneGraph.root.add(cube.toGraph(Matrix4.createScale(scale, scale, scale)))
-    }
+    fun addCube(scale: Float = 1.0F) = sceneGraph.root.add(cube.toGraph(Matrix4.createScale(scale, scale, scale)))
 
-    fun addSphere(scale: Float = 1.0F) {
-        sceneGraph.root.add(sphere.toGraph(Matrix4.createScale(scale, scale, scale)))
-    }
+    fun addSphere(scale: Float = 1.0F) = sceneGraph.root.add(sphere.toGraph(Matrix4.createScale(scale, scale, scale)))
 
-    fun addCapsule(scale: Float = 1.0F) {
-        sceneGraph.root.add(capsule.toGraph(Matrix4.createScale(scale, scale, scale)))
-    }
+    fun addCapsule(scale: Float = 1.0F) = sceneGraph.root.add(capsule.toGraph(Matrix4.createScale(scale, scale, scale)))
 
     fun addRandomSpinners(scale: Float = 10.0F) {
         val scaler = Matrix4.createScale(scale, scale, scale)

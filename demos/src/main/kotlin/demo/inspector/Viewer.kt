@@ -43,8 +43,8 @@ class Viewer(private val sceneGraph: SceneGraph) : JComponent() {
 
     init {
         val gd = GraphicsEnvironment.getLocalGraphicsEnvironment().defaultScreenDevice
-        val width = (gd.displayMode.width * 7) / 8
-        val height = (gd.displayMode.height * 7) / 8
+        val width = (gd.displayMode.width * 2) / 3
+        val height = (gd.displayMode.height * 2) / 3
 
         font = Font("Space Mono", Font.PLAIN, 15)
 

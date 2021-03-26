@@ -43,13 +43,9 @@ object Icons {
         fun material() = readImage("tree/material.png")
     }
 
-    private fun readImage(filename: String): BufferedImage {
-        return ImageIO.read(this.javaClass.classLoader.getResourceAsStream(filename))
-    }
+    private fun readImage(filename: String) = ImageIO.read(this.javaClass.classLoader.getResourceAsStream(filename))
 
-    private fun readImage(filename: String, color: Color): BufferedImage {
-        return blend(ImageIO.read(this.javaClass.classLoader.getResourceAsStream(filename)), color)
-    }
+    private fun readImage(filename: String, color: Color) = blend(ImageIO.read(this.javaClass.classLoader.getResourceAsStream(filename)), color)
 
     private fun blend(image: BufferedImage, color: Color): BufferedImage {
         val blend = color.rgb.and(0xFFFFFF)

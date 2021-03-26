@@ -35,35 +35,26 @@ class NodeTreeModel(private val sceneGraph: SceneGraph) : TreeModel, SceneGraphL
 
     override fun getRoot() = sceneGraph.root
 
-    override fun getChild(parent: Any, index: Int): Node? {
-        return if (parent is BranchNode) parent[index] else null
-    }
+    override fun getChild(parent: Any, index: Int) = if (parent is BranchNode) parent[index] else null
 
     override fun getChildCount(parent: Any) = if (parent is BranchNode) parent.childCount else 0
 
     override fun isLeaf(node: Any) = node is LeafNode
 
-    override fun valueForPathChanged(path: TreePath?, newValue: Any) {
-        println("*** valueForPathChanged : $path --> $newValue")
-    }
+    override fun valueForPathChanged(path: TreePath?, newValue: Any) = println("*** valueForPathChanged : $path --> $newValue")
 
-    override fun getIndexOfChild(parent: Any, child: Any): Int {
-        return if (parent is BranchNode) parent.indexOf(child) else -1
-    }
+    override fun getIndexOfChild(parent: Any, child: Any) = if (parent is BranchNode) parent.indexOf(child) else -1
 
-    override fun addTreeModelListener(l: TreeModelListener) {
-        treeModelListeners.addElement(l)
-    }
+    override fun addTreeModelListener(l: TreeModelListener) = treeModelListeners.addElement(l)
 
     override fun removeTreeModelListener(l: TreeModelListener) {
         treeModelListeners.removeElement(l)
     }
 
-    override fun nodesChanged(e: SceneGraphEvent) {
-    }
+    override fun nodesChanged(e: SceneGraphEvent) = Unit
 
     override fun nodesInserted(e: SceneGraphEvent) {
-        var indexOf = (e.parent as BranchNode).indexOf(e.child)
+        val indexOf = (e.parent as BranchNode).indexOf(e.child)
         val event = TreeModelEvent(e.child, arrayOf(e.parent), intArrayOf(indexOf), arrayOf(e.child))
         treeModelListeners.forEach { it.treeNodesInserted(event) }
     }

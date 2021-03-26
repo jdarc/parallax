@@ -30,7 +30,6 @@ import javax.swing.SwingConstants
 import javax.swing.tree.TreeCellRenderer
 
 class NodeTreeCellRenderer : TreeCellRenderer {
-
     private val rootIcon = ImageIcon(Icons.Tree.root())
     private val branchIcon = ImageIcon(Icons.Tree.branch())
     private val leafIcon = ImageIcon(Icons.Tree.leaf())

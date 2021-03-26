@@ -27,9 +27,7 @@ import java.awt.event.WindowEvent
 import javax.swing.JFrame
 
 open class BaseFrame : JFrame("Parallax 3D Graphics Engine"), Game {
-
     protected lateinit var viewer: Viewer
-
     protected var gameLoop: GameLoop? = null
 
     override fun update(seconds: Double) = viewer.update(seconds)

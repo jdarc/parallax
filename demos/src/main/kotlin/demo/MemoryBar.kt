@@ -22,7 +22,6 @@ import java.awt.*
 import javax.swing.JComponent
 
 class MemoryBar : JComponent() {
-
     private val clearColor = Color(0, 0, 0, 48)
     private val barColorHi = Color(32, 128, 32)
     private val barColorWarn = Color(128, 128, 32)

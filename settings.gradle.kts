@@ -1,5 +1,3 @@
 rootProject.name = "Parallax"
-
-include(":Engine")
-include(":Demos")
-
+include("engine")
+include("demos")

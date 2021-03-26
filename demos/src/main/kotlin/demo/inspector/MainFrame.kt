@@ -35,9 +35,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.plaf.basic.BasicSplitPaneDivider
 import javax.swing.plaf.basic.BasicSplitPaneUI
 
-
 class MainFrame : BaseFrame() {
-
     private val sceneGraph = SceneGraph()
     private var fpsCounter = FPSCounter()
     private val formatter = DecimalFormat("#,###")
