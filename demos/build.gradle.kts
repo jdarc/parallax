@@ -1,26 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+plugins { application }
 
-plugins {
-    kotlin("jvm") version "1.5.0-M1"
-    application
-}
+repositories { mavenCentral() }
 
-repositories {
-    mavenCentral()
-}
+dependencies { implementation(project(":engine")) }
 
-dependencies {
-    implementation(project(":engine"))
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "15"
-        languageVersion = "1.5"
-        useIR = true
-    }
-}
-
-application {
-    mainClass.set("demo.inspector.ProgramKt")
-}
+application { mainClass.set("demo.inspector.ProgramKt") }

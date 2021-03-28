@@ -25,7 +25,6 @@ import com.zynaps.parallax.math.Scalar.atan2
 import com.zynaps.parallax.math.Scalar.clamp
 import com.zynaps.parallax.math.Vector3
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 abstract class Camera(near: Float = 1.0F, far: Float = 1000.0F) {
 
     private var eye = Vector3.UNIT_Z

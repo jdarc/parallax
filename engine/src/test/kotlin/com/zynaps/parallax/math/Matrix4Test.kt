@@ -65,19 +65,42 @@ internal class Matrix4Test {
     fun shouldPostMultiplyMatrix() {
         val a = Matrix4(-9.6F, 0.8F, -3.5F, -5.3F, 5.0F, -1.7F, 0.0F, 3.8F, 6.3F, 8.2F, -8.8F, -1.4F, -8.7F, -1.3F, 7.1F, -2.8F)
         val b = Matrix4(2.3F, -0.5F, -5.7F, -1.2F, -8.2F, 8.8F, -4.9F, -9.7F, 3.5F, -5.3F, -7.1F, -0.9F, -2.1F, -5.4F, 4.5F, -4.5F)
-        val expected = floatArrayOf(-50.05F, -42.49F, 33.59F, -2.75F, 176.24F, -49.09F, 2.95F, 110.92F, -97.0F, -45.24F, 43.84F, -26.23F, 60.66F, 50.25F, -64.2F, -3.09F)
+        val expected = floatArrayOf(
+            -50.05F,
+            -42.49F,
+            33.59F,
+            -2.75F,
+            176.24F,
+            -49.09F,
+            2.95F,
+            110.92F,
+            -97.0F,
+            -45.24F,
+            43.84F,
+            -26.23F,
+            60.66F,
+            50.25F,
+            -64.2F,
+            -3.09F
+        )
         check(a * b, expected)
     }
 
     @Test
     fun shouldCreateUniformScalingMatrix() {
-        check(Matrix4.createScale(3.5F), floatArrayOf(3.5F, 0.0F, 0.0F, 0.0F, 0.0F, 3.5F, 0.0F, 0.0F, 0.0F, 0.0F, 3.5F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F))
+        check(
+            Matrix4.createScale(3.5F),
+            floatArrayOf(3.5F, 0.0F, 0.0F, 0.0F, 0.0F, 3.5F, 0.0F, 0.0F, 0.0F, 0.0F, 3.5F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+        )
     }
 
     @Test
     fun shouldCreateScalingMatrix() {
         val vec = Vector3(4F, -2F, 8F)
-        check(Matrix4.createScale(vec), floatArrayOf(4F, 0.0F, 0.0F, 0.0F, 0.0F, -2F, 0.0F, 0.0F, 0.0F, 0.0F, 8F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F))
+        check(
+            Matrix4.createScale(vec),
+            floatArrayOf(4F, 0.0F, 0.0F, 0.0F, 0.0F, -2F, 0.0F, 0.0F, 0.0F, 0.0F, 8F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+        )
     }
 
     @Test
@@ -85,7 +108,10 @@ internal class Matrix4Test {
         val angle = -0.15F
         val s = sin(angle)
         val c = cos(angle)
-        check(Matrix4.createRotationX(angle), floatArrayOf(1.0F, 0.0F, 0.0F, 0.0F, 0.0F, c, s, 0.0F, 0.0F, -s, c, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F))
+        check(
+            Matrix4.createRotationX(angle),
+            floatArrayOf(1.0F, 0.0F, 0.0F, 0.0F, 0.0F, c, s, 0.0F, 0.0F, -s, c, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+        )
     }
 
     @Test
@@ -93,7 +119,10 @@ internal class Matrix4Test {
         val angle = 2.45F
         val s = sin(angle)
         val c = cos(angle)
-        check(Matrix4.createRotationY(angle), floatArrayOf(c, 0.0F, -s, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, s, 0.0F, c, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F))
+        check(
+            Matrix4.createRotationY(angle),
+            floatArrayOf(c, 0.0F, -s, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, s, 0.0F, c, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+        )
     }
 
     @Test
@@ -101,7 +130,10 @@ internal class Matrix4Test {
         val angle = 1.75F
         val s = sin(angle)
         val c = cos(angle)
-        check(Matrix4.createRotationZ(angle), floatArrayOf(c, s, 0.0F, 0.0F, -s, c, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F))
+        check(
+            Matrix4.createRotationZ(angle),
+            floatArrayOf(c, s, 0.0F, 0.0F, -s, c, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+        )
     }
 
     private fun check(result: Matrix4, expected: FloatArray) {

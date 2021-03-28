@@ -22,29 +22,27 @@ import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.max
 import java.lang.Math.fma
 
-@Suppress("PropertyName", "DuplicatedCode")
 internal class Edge {
-
     var y1 = 0
     var y2 = 0
 
-    var x = 0.0F
-    var z = 0.0F
-    var _1OverZ = 0.0F
-    var nxOverZ = 0.0F
-    var nyOverZ = 0.0F
-    var nzOverZ = 0.0F
-    var tuOverZ = 0.0F
-    var tvOverZ = 0.0F
+    var x = 0F
+    var z = 0F
+    var _1OverZ = 0F
+    var nxOverZ = 0F
+    var nyOverZ = 0F
+    var nzOverZ = 0F
+    var tuOverZ = 0F
+    var tvOverZ = 0F
 
-    var xStep = 0.0F
-    var zStep = 0.0F
-    var _1OverZStep = 0.0F
-    var nxOverZStep = 0.0F
-    var nyOverZStep = 0.0F
-    var nzOverZStep = 0.0F
-    var tuOverZStep = 0.0F
-    var tvOverZStep = 0.0F
+    var xStep = 0F
+    var zStep = 0F
+    var _1OverZStep = 0F
+    var nxOverZStep = 0F
+    var nyOverZStep = 0F
+    var nzOverZStep = 0F
+    var tuOverZStep = 0F
+    var tvOverZStep = 0F
 
     fun configure(g: Gradients, a: Vertex, b: Vertex): Int {
         y1 = max(0, ceil(a.vy))

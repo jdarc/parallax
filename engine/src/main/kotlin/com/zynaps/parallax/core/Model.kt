@@ -24,7 +24,6 @@ import com.zynaps.parallax.graph.MaterialNode
 import com.zynaps.parallax.math.Aabb
 import com.zynaps.parallax.math.Matrix4
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
 class Model(val name: String, parts: Map<Material, Mesh> = HashMap()) {
 
     val localBounds = Aabb()

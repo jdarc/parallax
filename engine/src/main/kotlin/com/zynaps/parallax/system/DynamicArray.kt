@@ -52,5 +52,5 @@ class DynamicArray<T>(initialCapacity: Int = 16) {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun generate(capacity: Int): Array<T> = arrayOfNulls<Any?>(capacity) as Array<T>
+    private fun generate(capacity: Int) = arrayOfNulls<Any?>(capacity) as Array<T>
 }

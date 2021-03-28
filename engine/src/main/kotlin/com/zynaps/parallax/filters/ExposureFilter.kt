@@ -27,7 +27,6 @@ import com.zynaps.parallax.math.Scalar.clamp
 import com.zynaps.parallax.system.Parallel
 import kotlin.math.exp
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 class ExposureFilter(src: RenderBuffer = RenderBuffer.ZERO, dst: RenderBuffer = src) : Filter {
 
     override var source = src

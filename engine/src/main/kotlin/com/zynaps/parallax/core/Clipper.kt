@@ -18,7 +18,6 @@
  */
 package com.zynaps.parallax.core
 
-@Suppress("DuplicatedCode")
 internal class Clipper {
 
     private val dst = Array(6) { Vertex() }
@@ -35,12 +34,12 @@ internal class Clipper {
 
         if (outside(mask)) return 0
 
-        src[0].copyFrom(a)
-        src[1].copyFrom(b)
-        src[2].copyFrom(c)
+        src[0].set(a)
+        src[1].set(b)
+        src[2].set(c)
         if (inside(mask)) return 3
 
-        src[3].copyFrom(a)
+        src[3].set(a)
         return clip(dst, src, clip(src, dst, 3, -1.0F), 1.0F)
     }
 
@@ -90,19 +89,19 @@ internal class Clipper {
                 val nb = a2.vz * side - a2.vw * SAFETY
                 if (na < 0.0F) {
                     if (nb < 0.0F) {
-                        dst[ib++].copyFrom(a2)
+                        dst[ib++].set(a2)
                     } else {
                         dst[ib++].lerp(a1, a2, na / (na - nb))
                     }
                 } else if (nb < 0.0F) {
                     dst[ib++].lerp(a1, a2, na / (na - nb))
-                    dst[ib++].copyFrom(a2)
+                    dst[ib++].set(a2)
                 }
                 na = nb
                 a1 = a2
                 a2 = src[ia++]
             }
-            dst[ib].copyFrom(dst[0])
+            dst[ib].set(dst[0])
             return ib
         }
     }

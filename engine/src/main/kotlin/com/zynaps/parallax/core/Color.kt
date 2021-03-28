@@ -21,7 +21,6 @@ package com.zynaps.parallax.core
 import com.zynaps.parallax.math.Random
 import com.zynaps.parallax.math.Scalar.clamp
 
-@Suppress("unused")
 object Color {
 
     fun alpha(rgb: Int) = rgb shr 24 and 0xFF

@@ -38,7 +38,6 @@ class DynamicPool<T>(initialCapacity: Int = 16, private val generator: Supplier<
         index = 0
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun generate(generator: Supplier<T>, capacity: Int): Array<T> {
         val dest = arrayOfNulls<Any?>(capacity) as Array<T>
         (0 until capacity).mapIndexed { index, _ -> dest[index] = generator.get() }

@@ -20,38 +20,36 @@ package com.zynaps.parallax.core
 
 import java.lang.Math.fma
 
-@Suppress("PropertyName", "PrivatePropertyName", "DuplicatedCode")
 internal class Fragment {
+    var leftX = 0F
+    private var rightX = 0F
+    private var leftZ = 0F
 
-    var leftX = 0.0F
-    private var rightX = 0.0F
-    private var leftZ = 0.0F
+    private var leftXStep = 0F
+    private var rightXStep = 0F
+    private var leftZStep = 0F
 
-    private var leftXStep = 0.0F
-    private var rightXStep = 0.0F
-    private var leftZStep = 0.0F
+    var _1OverZdX = 0F
+    var _zOverZdX = 0F
+    var nxOverZdX = 0F
+    var nyOverZdX = 0F
+    var nzOverZdX = 0F
+    var tuOverZdX = 0F
+    var tvOverZdX = 0F
 
-    var _1OverZdX = 0.0F
-    var _zOverZdX = 0.0F
-    var nxOverZdX = 0.0F
-    var nyOverZdX = 0.0F
-    var nzOverZdX = 0.0F
-    var tuOverZdX = 0.0F
-    var tvOverZdX = 0.0F
+    private var _1OverZ = 0F
+    private var nxOverZ = 0F
+    private var nyOverZ = 0F
+    private var nzOverZ = 0F
+    private var tuOverZ = 0F
+    private var tvOverZ = 0F
 
-    private var _1OverZ = 0.0F
-    private var nxOverZ = 0.0F
-    private var nyOverZ = 0.0F
-    private var nzOverZ = 0.0F
-    private var tuOverZ = 0.0F
-    private var tvOverZ = 0.0F
-
-    private var _1OverZStep = 0.0F
-    private var nxOverZStep = 0.0F
-    private var nyOverZStep = 0.0F
-    private var nzOverZStep = 0.0F
-    private var tuOverZStep = 0.0F
-    private var tvOverZStep = 0.0F
+    private var _1OverZStep = 0F
+    private var nxOverZStep = 0F
+    private var nyOverZStep = 0F
+    private var nzOverZStep = 0F
+    private var tuOverZStep = 0F
+    private var tvOverZStep = 0F
 
     var leftY = 0
     var rightY = 0

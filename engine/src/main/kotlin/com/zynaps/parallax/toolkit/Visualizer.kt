@@ -53,22 +53,17 @@ class Visualizer(val width: Int, val height: Int) {
         sceneGraph.render(camera, device)
 
         lights.forEach { it.render(sceneGraph) }
-
-//        val t0 = System.nanoTime()
         lightProcessor.lights = lights
         lightProcessor.camera = camera
         lightProcessor.ambientRGB = ambientColor
         lightProcessor.apply()
-//        Logger.every("light", 1.0).debug("light processor took: ${(System.nanoTime() - t0) / 1000000.0} milliseconds")
 
-//        val t1 = System.nanoTime()
         glowProcessor.source = device.emissiveBuffer
         glowProcessor.destination = device.colorBuffer
         glowProcessor.apply()
-//        Logger.every("glow", 1.0).debug("glow processor took: ${(System.nanoTime() - t1) / 1000000.0} milliseconds")
 
-//        blurFilter.radius = 8
-//        blurFilter.steps = 2
+//        blurFilter.radius = 2
+//        blurFilter.steps = 1
 //        blurFilter.apply()
 
         GammaFilter(device.colorBuffer).apply()

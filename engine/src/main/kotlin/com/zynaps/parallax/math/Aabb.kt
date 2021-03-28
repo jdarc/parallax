@@ -23,7 +23,6 @@ import com.zynaps.parallax.math.Scalar.sqrt
 import com.zynaps.parallax.math.Vector3.Companion.NEGATIVE_INFINITY
 import com.zynaps.parallax.math.Vector3.Companion.POSITIVE_INFINITY
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "DuplicatedCode", "SpellCheckingInspection", "NOTHING_TO_INLINE")
 data class Aabb(private var min: Vector3 = POSITIVE_INFINITY, private var max: Vector3 = NEGATIVE_INFINITY) {
 
     val width get() = max.x - min.x
@@ -42,19 +41,19 @@ data class Aabb(private var min: Vector3 = POSITIVE_INFINITY, private var max: V
         return this
     }
 
-    fun contains(v: Vector3) = (v.x >= min.x) && (v.y >= min.y) && (v.z >= min.z) && (v.x <= max.x) && (v.y <= max.y) && (v.z <= max.z)
+    fun contains(v: Vector3) =
+        (v.x >= min.x) && (v.y >= min.y) && (v.z >= min.z) &&
+        (v.x <= max.x) && (v.y <= max.y) && (v.z <= max.z)
 
-    fun pointsBehind(plane: Plane): Int {
-        val a = if (plane.dot(min.x, max.y, min.z) < 0.0F) 1 else 0
-        val b = if (plane.dot(max.x, max.y, min.z) < 0.0F) 1 else 0
-        val c = if (plane.dot(max.x, min.y, min.z) < 0.0F) 1 else 0
-        val d = if (plane.dot(min.x, min.y, min.z) < 0.0F) 1 else 0
-        val e = if (plane.dot(min.x, max.y, max.z) < 0.0F) 1 else 0
-        val f = if (plane.dot(max.x, max.y, max.z) < 0.0F) 1 else 0
-        val g = if (plane.dot(max.x, min.y, max.z) < 0.0F) 1 else 0
-        val h = if (plane.dot(min.x, min.y, max.z) < 0.0F) 1 else 0
-        return a + b + c + d + e + f + g + h
-    }
+    fun pointsBehind(plane: Plane) =
+        (if (plane.dot(min.x, max.y, min.z) < 0) 1 else 0) +
+        (if (plane.dot(max.x, max.y, min.z) < 0) 1 else 0) +
+        (if (plane.dot(max.x, min.y, min.z) < 0) 1 else 0) +
+        (if (plane.dot(min.x, min.y, min.z) < 0) 1 else 0) +
+        (if (plane.dot(min.x, max.y, max.z) < 0) 1 else 0) +
+        (if (plane.dot(max.x, max.y, max.z) < 0) 1 else 0) +
+        (if (plane.dot(max.x, min.y, max.z) < 0) 1 else 0) +
+        (if (plane.dot(min.x, min.y, max.z) < 0) 1 else 0)
 
     fun aggregate(x: Float, y: Float, z: Float): Aabb {
         if (x.isFinite() && y.isFinite() && z.isFinite()) {
@@ -66,28 +65,28 @@ data class Aabb(private var min: Vector3 = POSITIVE_INFINITY, private var max: V
 
     fun aggregate(v: Vector3) = aggregate(v.x, v.y, v.z)
 
-    fun aggregate(other: Aabb) = aggregate(other.minimum.x, other.minimum.y, other.minimum.z).
-                                 aggregate(other.maximum.x, other.maximum.y, other.maximum.z)
+    fun aggregate(box: Aabb) =
+        aggregate(box.minimum.x, box.minimum.y, box.minimum.z).aggregate(box.maximum.x, box.maximum.y, box.maximum.z)
 
-    fun aggregate(other: Aabb, matrix: Matrix4): Aabb {
-        val a = matrix.m00 * other.minimum.x
-        val b = matrix.m10 * other.minimum.x
-        val c = matrix.m20 * other.minimum.x
-        val d = matrix.m01 * other.minimum.y
-        val e = matrix.m11 * other.minimum.y
-        val f = matrix.m21 * other.minimum.y
-        val g = matrix.m02 * other.minimum.z
-        val h = matrix.m12 * other.minimum.z
-        val i = matrix.m22 * other.minimum.z
-        val j = matrix.m00 * other.maximum.x
-        val k = matrix.m10 * other.maximum.x
-        val l = matrix.m20 * other.maximum.x
-        val m = matrix.m01 * other.maximum.y
-        val n = matrix.m11 * other.maximum.y
-        val o = matrix.m21 * other.maximum.y
-        val p = matrix.m02 * other.maximum.z
-        val q = matrix.m12 * other.maximum.z
-        val r = matrix.m22 * other.maximum.z
+    fun aggregate(box: Aabb, matrix: Matrix4): Aabb {
+        val a = matrix.m00 * box.minimum.x
+        val b = matrix.m10 * box.minimum.x
+        val c = matrix.m20 * box.minimum.x
+        val d = matrix.m01 * box.minimum.y
+        val e = matrix.m11 * box.minimum.y
+        val f = matrix.m21 * box.minimum.y
+        val g = matrix.m02 * box.minimum.z
+        val h = matrix.m12 * box.minimum.z
+        val i = matrix.m22 * box.minimum.z
+        val j = matrix.m00 * box.maximum.x
+        val k = matrix.m10 * box.maximum.x
+        val l = matrix.m20 * box.maximum.x
+        val m = matrix.m01 * box.maximum.y
+        val n = matrix.m11 * box.maximum.y
+        val o = matrix.m21 * box.maximum.y
+        val p = matrix.m02 * box.maximum.z
+        val q = matrix.m12 * box.maximum.z
+        val r = matrix.m22 * box.maximum.z
         aggregate(a + m + g + matrix.m03, b + n + h + matrix.m13, c + o + i + matrix.m23)
         aggregate(j + m + g + matrix.m03, k + n + h + matrix.m13, l + o + i + matrix.m23)
         aggregate(j + d + g + matrix.m03, k + e + h + matrix.m13, l + f + i + matrix.m23)

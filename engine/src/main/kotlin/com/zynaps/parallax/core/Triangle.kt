@@ -20,39 +20,31 @@ package com.zynaps.parallax.core
 
 import com.zynaps.parallax.math.Vector3
 
-class Triangle(val v0: Int, val v1: Int, val v2: Int) {
-    var n0 = 0
-    var n1 = 0
-    var n2 = 0
-    var t0 = 0
-    var t1 = 0
-    var t2 = 0
-    var normalType = Normal.SURFACE
+class Triangle internal constructor(val v0: Int, val v1: Int, val v2: Int) {
+    var n0 = 0; internal set
+    var n1 = 0; internal set
+    var n2 = 0; internal set
+    var t0 = 0; internal set
+    var t1 = 0; internal set
+    var t2 = 0; internal set
+
+    var shading = Shading.FLAT
     var material = Material.DEFAULT
-    var normal = Vector3.ZERO
 
-    fun withNormalType(type: Normal): Triangle {
-        normalType = type
+    internal var normal = Vector3.UNIT_X
+
+    fun normals(a: Int, b: Int, c: Int): Triangle {
+        n0 = a.coerceAtLeast(0)
+        n1 = b.coerceAtLeast(0)
+        n2 = c.coerceAtLeast(0)
+        shading = Shading.NORMAL
         return this
     }
 
-    fun withNormals(a: Int, b: Int, c: Int): Triangle {
-        n0 = a
-        n1 = b
-        n2 = c
-        normalType = Normal.TRIANGLE
-        return this
-    }
-
-    fun withUvs(a: Int, b: Int, c: Int): Triangle {
-        t0 = a
-        t1 = b
-        t2 = c
-        return this
-    }
-
-    fun withMaterial(material: Material): Triangle {
-        this.material = material
+    fun uvs(a: Int, b: Int, c: Int): Triangle {
+        t0 = a.coerceAtLeast(0)
+        t1 = b.coerceAtLeast(0)
+        t2 = c.coerceAtLeast(0)
         return this
     }
 }

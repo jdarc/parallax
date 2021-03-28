@@ -18,9 +18,11 @@
  */
 package com.zynaps.parallax.graph
 
-class RootNode internal constructor(val attached: (c: Node, p: Node) -> Unit,
-                                    val detached: (c: Node, p: Node) -> Unit,
-                                    val structure: (c: Node, p: Node) -> Unit) : BranchNode() {
+class RootNode internal constructor(
+    val attached: (c: Node, p: Node) -> Unit,
+    val detached: (c: Node, p: Node) -> Unit,
+    val structure: (c: Node, p: Node) -> Unit
+) : BranchNode() {
 
     override var name = "Universe"
 

@@ -25,7 +25,6 @@ import com.zynaps.parallax.math.Scalar.clamp
 import com.zynaps.parallax.math.Scalar.max
 import com.zynaps.parallax.math.Vector3
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 class Light(color: Int = 0xFFFFFF) {
     private var pos = Vector3(0.0F, 100.0F, 0.0F)
     private var dir = Vector3.ZERO
@@ -101,20 +100,19 @@ class Light(color: Int = 0xFFFFFF) {
     }
 
     fun render(sceneGraph: SceneGraph) {
-        if (castShadows) {
-            if (resolution != device.width) {
-                device = Device(resolution, resolution)
-                device.rasterizer = DepthRasterizer()
-            }
-            val up = if (Vector3.UNIT_Y.dot(tol) == 1.0F) Vector3.UNIT_X else Vector3.UNIT_Y
-            val view = Matrix4.createLookAt(pos, dir, up)
-            val proj = Matrix4.createOrthographic(-size, size, -size, size, near, far)
-            combined = proj * view
-            device.projection = proj
-            device.cullMode = CullMode.FRONT
-            device.clear()
-            sceneGraph.render(view, proj, device)
+        if (!castShadows) return
+        if (resolution != device.width) {
+            device = Device(resolution, resolution)
+            device.rasterizer = DepthRasterizer()
         }
+        val up = if (Vector3.UNIT_Y.dot(tol) == 1.0F) Vector3.UNIT_X else Vector3.UNIT_Y
+        val view = Matrix4.createLookAt(pos, dir, up)
+        val proj = Matrix4.createOrthographic(-size, size, -size, size, near, far)
+        combined = proj * view
+        device.projection = proj
+        device.cullMode = CullMode.FRONT
+        device.clear()
+        sceneGraph.render(view, proj, device)
     }
 
     private fun sample(wx: Float, wy: Float, wz: Float): Float {

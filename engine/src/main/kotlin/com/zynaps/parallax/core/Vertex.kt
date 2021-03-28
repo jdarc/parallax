@@ -23,16 +23,15 @@ import com.zynaps.parallax.math.Vector2
 import com.zynaps.parallax.math.Vector3
 import java.lang.Math.fma
 
-@Suppress("DuplicatedCode")
 internal data class Vertex(
-    var vx: Float = 0.0F, var vy: Float = 0.0F, var vz: Float = 0.0F, var vw: Float = 0.0F,
-    var nx: Float = 0.0F, var ny: Float = 0.0F, var nz: Float = 0.0F,
-    var tu: Float = 0.0F, var tv: Float = 0.0F
+    var vx: Float = 0F, var vy: Float = 0F, var vz: Float = 0F, var vw: Float = 0F,
+    var nx: Float = 0F, var ny: Float = 0F, var nz: Float = 0F,
+    var tu: Float = 0F, var tv: Float = 0F
 ) {
 
-    constructor(v: Vector3, n: Vector3, t: Vector2) : this(v.x, v.y, v.z, 0.0F, n.x, n.y, n.z, t.x, t.y)
+    constructor(v: Vector3, n: Vector3, t: Vector2) : this(v.x, v.y, v.z, 0F, n.x, n.y, n.z, t.x, t.y)
 
-    fun copyFrom(other: Vertex) {
+    fun set(other: Vertex) {
         vx = other.vx
         vy = other.vy
         vz = other.vz
@@ -74,11 +73,11 @@ internal data class Vertex(
         tv = fma(t, b.tv - a.tv, a.tv)
     }
 
-    fun toScreen(width: Int, height: Int) {
-        vw = 1.0F / vw
-        vx = 0.5F * fma(vx, vw, 1.0F) * width
-        vy = 0.5F * fma(-vy, vw, 1.0F) * height
-        vz = 0.5F * fma(vz, vw, 1.0F)
+    fun scale(width: Int, height: Int) {
+        vw = 1F / vw
+        vx = 0.5F * fma(vx, vw, 1F) * width
+        vy = 0.5F * fma(-vy, vw, 1F) * height
+        vz = 0.5F * fma(vz, vw, 1F)
         nx *= vw
         ny *= vw
         nz *= vw

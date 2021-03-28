@@ -25,7 +25,6 @@ import com.zynaps.parallax.system.DynamicArray
 import com.zynaps.parallax.system.DynamicPool
 
 internal class SpanBuffer(val width: Int, val height: Int) {
-
     private val pool = DynamicPool(128) { Fragment() }
     private val spans = Array<DynamicArray<Fragment>>(height) { DynamicArray(128) }
 

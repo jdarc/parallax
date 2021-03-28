@@ -23,7 +23,6 @@ import com.zynaps.parallax.core.Light
 import com.zynaps.parallax.graph.SceneGraph
 import com.zynaps.parallax.io.ResourceLoader
 import com.zynaps.parallax.math.Vector3
-import com.zynaps.parallax.toolkit.BoundsVisualizer
 import com.zynaps.parallax.toolkit.Controller
 import com.zynaps.parallax.toolkit.FPSController
 import com.zynaps.parallax.toolkit.Visualizer
@@ -37,7 +36,6 @@ class Viewer : Canvas() {
     private var sceneGraph: SceneGraph
     private var camera: Camera
     private var visualizer: Visualizer
-    private var boundsVisualizer: BoundsVisualizer
     private var controller: Controller
     private var fpsCounter: FPSCounter
 
@@ -64,8 +62,6 @@ class Viewer : Canvas() {
         visualizer.lights[1].color = 0x8833f0
         visualizer.lights[1].castShadows = true
 
-        boundsVisualizer = BoundsVisualizer(visualizer.device.colorBuffer, visualizer.device.depthBuffer)
-
         camera = Camera.Perspective(aspect = width / height.toFloat(), near = 1.0F, far = 2000.0F)
         camera.moveTo(-40.0F * 1.0F, 20.0F * 1.0F, 50.0F * 1.0F)
         controller = FPSController(camera)
@@ -89,7 +85,6 @@ class Viewer : Canvas() {
         controller.update(seconds, 100.0F)
         sceneGraph.update(seconds)
         visualizer.render(sceneGraph, camera)
-//        boundsVisualizer.render(sceneGraph, camera)
     }
 
     fun render() {

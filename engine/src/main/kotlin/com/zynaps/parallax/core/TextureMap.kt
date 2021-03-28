@@ -26,9 +26,9 @@ import com.zynaps.parallax.math.Scalar
 import java.awt.image.BufferedImage
 
 class TextureMap private constructor(buffer: RenderBuffer) {
-
     val width = buffer.width
     val height = buffer.size / width
+
     private val siz8 = width.shl(8).toFloat()
     private val bits = Scalar.log2(width.toFloat()).toInt()
     private val mask = width * height - 1
@@ -62,7 +62,6 @@ class TextureMap private constructor(buffer: RenderBuffer) {
     }
 
     companion object {
-
         private const val MASK = 0b11111111000000001111111100000000111111110000000011111111
 
         @Throws(IllegalArgumentException::class)

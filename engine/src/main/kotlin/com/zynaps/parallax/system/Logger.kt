@@ -20,7 +20,6 @@ package com.zynaps.parallax.system
 
 import java.util.concurrent.TimeUnit
 
-@Suppress("unused")
 object Logger : Logging {
 
     const val ANSI_RESET = "\u001B[0m"

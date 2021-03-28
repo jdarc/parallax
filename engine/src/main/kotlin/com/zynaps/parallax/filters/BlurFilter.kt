@@ -29,7 +29,6 @@ import com.zynaps.parallax.math.Scalar.min
 import com.zynaps.parallax.system.Parallel
 import java.util.stream.IntStream
 
-@Suppress("SpellCheckingInspection")
 class BlurFilter(src: RenderBuffer = RenderBuffer.ZERO, dst: RenderBuffer = src) : Filter {
 
     private var tmp = IntArray(0)

@@ -24,14 +24,13 @@ import com.zynaps.parallax.core.Device
 import com.zynaps.parallax.core.Frustum
 import com.zynaps.parallax.math.Matrix4
 
-@Suppress("MemberVisibilityCanBePrivate", "unused")
 class SceneGraph {
 
     private val listeners = mutableSetOf<SceneGraphListener>()
 
     val root = RootNode({ node, parent -> listeners.forEach { it.nodesInserted(SceneGraphEvent(node, parent)) } },
-        { node, parent -> listeners.forEach { it.nodesRemoved(SceneGraphEvent(node, parent)) } },
-        { node, parent -> listeners.forEach { it.structureChanged(SceneGraphEvent(node, parent)) } })
+                        { node, parent -> listeners.forEach { it.nodesRemoved(SceneGraphEvent(node, parent)) } },
+                        { node, parent -> listeners.forEach { it.structureChanged(SceneGraphEvent(node, parent)) } })
 
     fun addListener(l: SceneGraphListener) {
         listeners.add(l)

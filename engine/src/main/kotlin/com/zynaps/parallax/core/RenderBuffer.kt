@@ -18,14 +18,11 @@
  */
 package com.zynaps.parallax.core
 
-@Suppress("unused")
 class RenderBuffer private constructor(val data: IntArray, val width: Int) {
-
     val size = data.size
     val height = if (width == 0) 0 else size / width
 
     operator fun get(index: Int) = data[index]
-
     operator fun set(index: Int, value: Int) {
         data[index] = value
     }
@@ -39,11 +36,8 @@ class RenderBuffer private constructor(val data: IntArray, val width: Int) {
     }
 
     companion object {
-
         val ZERO = RenderBuffer(IntArray(1), 0)
-
-        fun create(width: Int, height: Int) = RenderBuffer(IntArray(width * height), width)
-
-        fun wrap(data: IntArray, width: Int) = RenderBuffer(data, width)
+        fun wrap(data: IntArray, scan: Int) = RenderBuffer(data, scan)
+        fun create(width: Int, height: Int) = wrap(IntArray(width * height), width)
     }
 }

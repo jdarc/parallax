@@ -27,12 +27,11 @@ import com.zynaps.parallax.math.Scalar.sin
 import com.zynaps.parallax.math.Scalar.sqrt
 import com.zynaps.parallax.math.Scalar.tan
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "DuplicatedCode", "SpellCheckingInspection", "NOTHING_TO_INLINE")
 data class Matrix4(
-    inline val m00: Float, inline val m10: Float, inline val m20: Float, inline val m30: Float,
-    inline val m01: Float, inline val m11: Float, inline val m21: Float, inline val m31: Float,
-    inline val m02: Float, inline val m12: Float, inline val m22: Float, inline val m32: Float,
-    inline val m03: Float, inline val m13: Float, inline val m23: Float, inline val m33: Float
+    val m00: Float, val m10: Float, val m20: Float, val m30: Float,
+    val m01: Float, val m11: Float, val m21: Float, val m31: Float,
+    val m02: Float, val m12: Float, val m22: Float, val m32: Float,
+    val m03: Float, val m13: Float, val m23: Float, val m33: Float
 ) {
 
     constructor(v: Float) : this(v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v)
@@ -44,9 +43,9 @@ data class Matrix4(
         src[offset + 0xC], src[offset + 0xD], src[offset + 0xE], src[offset + 0xF]
     )
 
-    inline val isIdentity get() = equals(IDENTITY)
+    val isIdentity get() = equals(IDENTITY)
 
-    inline val determinant: Float
+    val determinant: Float
         get() {
             val d0 = m00 * (m11 * m22 * m33 + m12 * m23 * m31 + m13 * m21 * m32 - m13 * m22 * m31 - m11 * m23 * m32 - m12 * m21 * m33)
             val d1 = m01 * (m10 * m22 * m33 + m12 * m23 * m30 + m13 * m20 * m32 - m13 * m22 * m30 - m10 * m23 * m32 - m12 * m20 * m33)
@@ -55,62 +54,62 @@ data class Matrix4(
             return d0 - d1 + d2 - d3
         }
 
-    inline operator fun unaryMinus() = Matrix4(
+    operator fun unaryMinus() = Matrix4(
         -m00, -m10, -m20, -m30,
         -m01, -m11, -m21, -m31,
         -m02, -m12, -m22, -m32,
         -m03, -m13, -m23, -m33
     )
 
-    inline operator fun plus(rhs: Float) = Matrix4(
+    operator fun plus(rhs: Float) = Matrix4(
         m00 + rhs, m10 + rhs, m20 + rhs, m30 + rhs,
         m01 + rhs, m11 + rhs, m21 + rhs, m31 + rhs,
         m02 + rhs, m12 + rhs, m22 + rhs, m32 + rhs,
         m03 + rhs, m13 + rhs, m23 + rhs, m33 + rhs
     )
 
-    inline operator fun plus(rhs: Matrix4) = Matrix4(
+    operator fun plus(rhs: Matrix4) = Matrix4(
         m00 + rhs.m00, m10 + rhs.m10, m20 + rhs.m20, m30 + rhs.m30,
         m01 + rhs.m01, m11 + rhs.m11, m21 + rhs.m21, m31 + rhs.m31,
         m02 + rhs.m02, m12 + rhs.m12, m22 + rhs.m22, m32 + rhs.m32,
         m03 + rhs.m03, m13 + rhs.m13, m23 + rhs.m23, m33 + rhs.m33
     )
 
-    inline operator fun minus(rhs: Float) = Matrix4(
+    operator fun minus(rhs: Float) = Matrix4(
         m00 - rhs, m10 - rhs, m20 - rhs, m30 - rhs,
         m01 - rhs, m11 - rhs, m21 - rhs, m31 - rhs,
         m02 - rhs, m12 - rhs, m22 - rhs, m32 - rhs,
         m03 - rhs, m13 - rhs, m23 - rhs, m33 - rhs
     )
 
-    inline operator fun minus(rhs: Matrix4) = Matrix4(
+    operator fun minus(rhs: Matrix4) = Matrix4(
         m00 - rhs.m00, m10 - rhs.m10, m20 - rhs.m20, m30 - rhs.m30,
         m01 - rhs.m01, m11 - rhs.m11, m21 - rhs.m21, m31 - rhs.m31,
         m02 - rhs.m02, m12 - rhs.m12, m22 - rhs.m22, m32 - rhs.m32,
         m03 - rhs.m03, m13 - rhs.m13, m23 - rhs.m23, m33 - rhs.m33
     )
 
-    inline operator fun times(rhs: Float) = Matrix4(
+    operator fun times(rhs: Float) = Matrix4(
         m00 * rhs, m10 * rhs, m20 * rhs, m30 * rhs,
         m01 * rhs, m11 * rhs, m21 * rhs, m31 * rhs,
         m02 * rhs, m12 * rhs, m22 * rhs, m32 * rhs,
         m03 * rhs, m13 * rhs, m23 * rhs, m33 * rhs
     )
 
-    inline operator fun times(rhs: Vector3) = Vector3(
+    operator fun times(rhs: Vector3) = Vector3(
         (m00 * rhs.x) + (m01 * rhs.y) + (m02 * rhs.z) + m03,
         (m10 * rhs.x) + (m11 * rhs.y) + (m12 * rhs.z) + m13,
         (m20 * rhs.x) + (m21 * rhs.y) + (m22 * rhs.z) + m23
     )
 
-    inline operator fun times(rhs: Vector4) = Vector4(
+    operator fun times(rhs: Vector4) = Vector4(
         (m00 * rhs.x) + (m01 * rhs.y) + (m02 * rhs.z) + (m03 * rhs.w),
         (m10 * rhs.x) + (m11 * rhs.y) + (m12 * rhs.z) + (m13 * rhs.w),
         (m20 * rhs.x) + (m21 * rhs.y) + (m22 * rhs.z) + (m23 * rhs.w),
         (m30 * rhs.x) + (m31 * rhs.y) + (m32 * rhs.z) + (m33 * rhs.w)
     )
 
-    inline operator fun times(rhs: Matrix4) = Matrix4(
+    operator fun times(rhs: Matrix4) = Matrix4(
         (m00 * rhs.m00) + (m01 * rhs.m10) + (m02 * rhs.m20) + (m03 * rhs.m30),
         (m10 * rhs.m00) + (m11 * rhs.m10) + (m12 * rhs.m20) + (m13 * rhs.m30),
         (m20 * rhs.m00) + (m21 * rhs.m10) + (m22 * rhs.m20) + (m23 * rhs.m30),
@@ -129,15 +128,23 @@ data class Matrix4(
         (m30 * rhs.m03) + (m31 * rhs.m13) + (m32 * rhs.m23) + (m33 * rhs.m33)
     )
 
-    inline operator fun get(row: Int, col: Int) = when (row) {
-        0 -> when (col) { 0 -> m00; 1 -> m01; 2 -> m02; 3 -> m03; else -> throw IndexOutOfBoundsException() }
-        1 -> when (col) { 0 -> m10; 1 -> m11; 2 -> m12; 3 -> m13; else -> throw IndexOutOfBoundsException() }
-        2 -> when (col) { 0 -> m20; 1 -> m21; 2 -> m22; 3 -> m23; else -> throw IndexOutOfBoundsException() }
-        3 -> when (col) { 0 -> m30; 1 -> m31; 2 -> m32; 3 -> m33; else -> throw IndexOutOfBoundsException() }
+    operator fun get(row: Int, col: Int) = when (row) {
+        0 -> when (col) {
+            0 -> m00; 1 -> m01; 2 -> m02; 3 -> m03; else -> throw IndexOutOfBoundsException()
+        }
+        1 -> when (col) {
+            0 -> m10; 1 -> m11; 2 -> m12; 3 -> m13; else -> throw IndexOutOfBoundsException()
+        }
+        2 -> when (col) {
+            0 -> m20; 1 -> m21; 2 -> m22; 3 -> m23; else -> throw IndexOutOfBoundsException()
+        }
+        3 -> when (col) {
+            0 -> m30; 1 -> m31; 2 -> m32; 3 -> m33; else -> throw IndexOutOfBoundsException()
+        }
         else -> throw IndexOutOfBoundsException()
     }
 
-    inline fun getRow(row: Int) = when (row) {
+    fun getRow(row: Int) = when (row) {
         0 -> Vector4(m00, m01, m02, m03)
         1 -> Vector4(m10, m11, m12, m13)
         2 -> Vector4(m20, m21, m22, m23)
@@ -145,7 +152,7 @@ data class Matrix4(
         else -> throw IndexOutOfBoundsException()
     }
 
-    inline fun getColumn(col: Int) = when (col) {
+    fun getColumn(col: Int) = when (col) {
         0 -> Vector4(m00, m10, m20, m30)
         1 -> Vector4(m01, m11, m21, m31)
         2 -> Vector4(m02, m12, m22, m32)
@@ -153,25 +160,24 @@ data class Matrix4(
         else -> throw IndexOutOfBoundsException()
     }
 
-    inline fun toArray(dst: FloatArray, offset: Int = 0) {
+    fun toArray(dst: FloatArray, offset: Int = 0) {
         dst[offset + 0x0] = m00; dst[offset + 0x1] = m10; dst[offset + 0x2] = m20; dst[offset + 0x3] = m30
         dst[offset + 0x4] = m01; dst[offset + 0x5] = m11; dst[offset + 0x6] = m21; dst[offset + 0x7] = m31
         dst[offset + 0x8] = m02; dst[offset + 0x9] = m12; dst[offset + 0xA] = m22; dst[offset + 0xB] = m32
         dst[offset + 0xC] = m03; dst[offset + 0xD] = m13; dst[offset + 0xE] = m23; dst[offset + 0xF] = m33
     }
 
-    inline fun equals(rhs: Matrix4, epsilon: Float = EPSILON): Boolean {
-        return equals(m00, rhs.m00, epsilon) && equals(m10, rhs.m10, epsilon) &&
-               equals(m20, rhs.m20, epsilon) && equals(m30, rhs.m30, epsilon) &&
-               equals(m01, rhs.m01, epsilon) && equals(m11, rhs.m11, epsilon) &&
-               equals(m21, rhs.m21, epsilon) && equals(m31, rhs.m31, epsilon) &&
-               equals(m02, rhs.m02, epsilon) && equals(m12, rhs.m12, epsilon) &&
-               equals(m22, rhs.m22, epsilon) && equals(m32, rhs.m32, epsilon) &&
-               equals(m03, rhs.m03, epsilon) && equals(m13, rhs.m13, epsilon) &&
-               equals(m23, rhs.m23, epsilon) && equals(m33, rhs.m33, epsilon)
-    }
+    fun equals(rhs: Matrix4, epsilon: Float = EPSILON) =
+        equals(m00, rhs.m00, epsilon) && equals(m10, rhs.m10, epsilon) &&
+        equals(m20, rhs.m20, epsilon) && equals(m30, rhs.m30, epsilon) &&
+        equals(m01, rhs.m01, epsilon) && equals(m11, rhs.m11, epsilon) &&
+        equals(m21, rhs.m21, epsilon) && equals(m31, rhs.m31, epsilon) &&
+        equals(m02, rhs.m02, epsilon) && equals(m12, rhs.m12, epsilon) &&
+        equals(m22, rhs.m22, epsilon) && equals(m32, rhs.m32, epsilon) &&
+        equals(m03, rhs.m03, epsilon) && equals(m13, rhs.m13, epsilon) &&
+        equals(m23, rhs.m23, epsilon) && equals(m33, rhs.m33, epsilon)
 
-    inline val invert: Matrix4
+    val invert: Matrix4
         get() {
             val b00 = m00 * m11 - m10 * m01
             val b01 = m00 * m21 - m20 * m01
@@ -187,7 +193,7 @@ data class Matrix4(
             val b11 = m22 * m33 - m32 * m23
             val det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06
             if (abs(det) < EPSILON) return ERROR
-            val invDet = 1.0F / det
+            val invDet = 1F / det
             val a = (b11 * m11 - b10 * m21 + b09 * m31) * invDet
             val b = (b10 * m20 - b11 * m10 - b09 * m30) * invDet
             val c = (b05 * m13 - b04 * m23 + b03 * m33) * invDet
@@ -207,14 +213,14 @@ data class Matrix4(
             return Matrix4(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p)
         }
 
-    inline fun transpose() = Matrix4(
+    fun transpose() = Matrix4(
         m00, m01, m02, m03,
         m10, m11, m12, m13,
         m20, m21, m22, m23,
         m30, m31, m32, m33
     )
 
-    inline fun transformNormal(rhs: Vector3) = Vector3(
+    fun transformNormal(rhs: Vector3) = Vector3(
         (m00 * rhs.x) + (m01 * rhs.y) + (m02 * rhs.z),
         (m10 * rhs.x) + (m11 * rhs.y) + (m12 * rhs.z),
         (m20 * rhs.x) + (m21 * rhs.y) + (m22 * rhs.z)
@@ -222,19 +228,19 @@ data class Matrix4(
 
     companion object {
 
-        val ZERO = Matrix4(0.0F)
+        val ZERO = Matrix4(0F)
 
-        val IDENTITY = Matrix4(1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+        val IDENTITY = Matrix4(1F, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 1F)
 
         val ERROR = Matrix4(Float.NaN)
 
         fun createTranslation(x: Float, y: Float, z: Float) =
-            Matrix4(1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, x, y, z, 1.0F)
+            Matrix4(1F, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 1F, 0F, x, y, z, 1F)
 
         fun createTranslation(v: Vector3) = createTranslation(v.x, v.y, v.z)
 
         fun createScale(x: Float, y: Float, z: Float) =
-            Matrix4(x, 0.0F, 0.0F, 0.0F, 0.0F, y, 0.0F, 0.0F, 0.0F, 0.0F, z, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            Matrix4(x, 0F, 0F, 0F, 0F, y, 0F, 0F, 0F, 0F, z, 0F, 0F, 0F, 0F, 1F)
 
         fun createScale(scales: Vector3) = createScale(scales.x, scales.y, scales.z)
 
@@ -243,23 +249,23 @@ data class Matrix4(
         fun createRotationX(angle: Float): Matrix4 {
             val cos = cos(angle)
             val sin = sin(angle)
-            return Matrix4(1.0F, 0.0F, 0.0F, 0.0F, 0.0F, cos, sin, 0.0F, 0.0F, -sin, cos, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            return Matrix4(1F, 0F, 0F, 0F, 0F, cos, sin, 0F, 0F, -sin, cos, 0F, 0F, 0F, 0F, 1F)
         }
 
         fun createRotationY(angle: Float): Matrix4 {
             val cos = cos(angle)
             val sin = sin(angle)
-            return Matrix4(cos, 0.0F, -sin, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, sin, 0.0F, cos, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            return Matrix4(cos, 0F, -sin, 0F, 0F, 1F, 0F, 0F, sin, 0F, cos, 0F, 0F, 0F, 0F, 1F)
         }
 
         fun createRotationZ(angle: Float): Matrix4 {
             val cos = cos(angle)
             val sin = sin(angle)
-            return Matrix4(cos, sin, 0.0F, 0.0F, -sin, cos, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            return Matrix4(cos, sin, 0F, 0F, -sin, cos, 0F, 0F, 0F, 0F, 1F, 0F, 0F, 0F, 0F, 1F)
         }
 
         fun createFromMatrix3x3(m: Matrix3) =
-            Matrix4(m.m00, m.m10, m.m20, 0.0F, m.m01, m.m11, m.m21, 0.0F, m.m02, m.m12, m.m22, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            Matrix4(m.m00, m.m10, m.m20, 0F, m.m01, m.m11, m.m21, 0F, m.m02, m.m12, m.m22, 0F, 0F, 0F, 0F, 1F)
 
         fun createFromAxisAngle(x: Float, y: Float, z: Float, angle: Float): Matrix4 {
             val magnitude = sqrt(x * x + y * y + z * z)
@@ -269,7 +275,7 @@ data class Matrix4(
             val az = z / magnitude
             val cos = cos(angle)
             val sin = sin(angle)
-            val t = 1.0F - cos
+            val t = 1F - cos
             val xz = ax * az
             val xy = ax * ay
             val yz = ay * az
@@ -282,7 +288,7 @@ data class Matrix4(
             val m20 = t * xz - ay * sin
             val m21 = t * yz + ax * sin
             val m22 = t * az * az + cos
-            return Matrix4(m00, m10, m20, 0.0F, m01, m11, m21, 0.0F, m02, m12, m22, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            return Matrix4(m00, m10, m20, 0F, m01, m11, m21, 0F, m02, m12, m22, 0F, 0F, 0F, 0F, 1F)
         }
 
         fun createFromAxisAngle(axis: Vector3, angle: Float) = createFromAxisAngle(axis.x, axis.y, axis.z, angle)
@@ -298,43 +304,43 @@ data class Matrix4(
             val qy = sy * cp * cr - cy * sp * sr
             val qz = cy * cp * sr - sy * sp * cr
             val qw = cy * cp * cr + sy * sp * sr
-            val m00 = 1.0F - 2.0F * qy * qy - 2.0F * qz * qz
-            val m01 = 2.0F * (qx * qy - qw * qz)
-            val m02 = 2.0F * (qx * qz + qw * qy)
-            val m10 = 2.0F * (qx * qy + qw * qz)
-            val m11 = 1.0F - 2.0F * qx * qx - 2.0F * qz * qz
-            val m12 = 2.0F * (qy * qz - qw * qx)
-            val m20 = 2.0F * (qx * qz - qw * qy)
-            val m21 = 2.0F * (qy * qz + qw * qx)
-            val m22 = 1.0F - 2.0F * qx * qx - 2.0F * qy * qy
-            return Matrix4(m00, m10, m20, 0.0F, m01, m11, m21, 0.0F, m02, m12, m22, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            val m00 = 1F - 2F * qy * qy - 2F * qz * qz
+            val m01 = 2F * (qx * qy - qw * qz)
+            val m02 = 2F * (qx * qz + qw * qy)
+            val m10 = 2F * (qx * qy + qw * qz)
+            val m11 = 1F - 2F * qx * qx - 2F * qz * qz
+            val m12 = 2F * (qy * qz - qw * qx)
+            val m20 = 2F * (qx * qz - qw * qy)
+            val m21 = 2F * (qy * qz + qw * qx)
+            val m22 = 1F - 2F * qx * qx - 2F * qy * qy
+            return Matrix4(m00, m10, m20, 0F, m01, m11, m21, 0F, m02, m12, m22, 0F, 0F, 0F, 0F, 1F)
         }
 
         fun createFromQuaternion(q: Quaternion): Matrix4 {
             val lenSqr = q.lengthSquared
             if (lenSqr < EPSILON) return ERROR
-            val invLen = 1.0F / sqrt(lenSqr)
+            val invLen = 1F / sqrt(lenSqr)
             val nx = q.x * invLen
             val ny = q.y * invLen
             val nz = q.z * invLen
             val nw = q.w * invLen
-            val m00 = 1.0F - 2.0F * ny * ny - 2.0F * nz * nz
-            val m01 = 2.0F * nx * ny - 2.0F * nz * nw
-            val m02 = 2.0F * nx * nz + 2.0F * ny * nw
-            val m10 = 2.0F * nx * ny + 2.0F * nz * nw
-            val m11 = 1.0F - 2.0F * nx * nx - 2.0F * nz * nz
-            val m12 = 2.0F * ny * nz - 2.0F * nx * nw
-            val m20 = 2.0F * nx * nz - 2.0F * ny * nw
-            val m21 = 2.0F * ny * nz + 2.0F * nx * nw
-            val m22 = 1.0F - 2.0F * nx * nx - 2.0F * ny * ny
-            return Matrix4(m00, m10, m20, 0.0F, m01, m11, m21, 0.0F, m02, m12, m22, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            val m00 = 1F - 2F * ny * ny - 2F * nz * nz
+            val m01 = 2F * nx * ny - 2F * nz * nw
+            val m02 = 2F * nx * nz + 2F * ny * nw
+            val m10 = 2F * nx * ny + 2F * nz * nw
+            val m11 = 1F - 2F * nx * nx - 2F * nz * nz
+            val m12 = 2F * ny * nz - 2F * nx * nw
+            val m20 = 2F * nx * nz - 2F * ny * nw
+            val m21 = 2F * ny * nz + 2F * nx * nw
+            val m22 = 1F - 2F * nx * nx - 2F * ny * ny
+            return Matrix4(m00, m10, m20, 0F, m01, m11, m21, 0F, m02, m12, m22, 0F, 0F, 0F, 0F, 1F)
         }
 
         fun createWorld(pos: Vector3, fwd: Vector3, up: Vector3): Matrix4 {
-            val d = (-fwd).normalize()
+            val d = -fwd.normalize()
             val r = up.cross(d).normalize()
             val u = d.cross(r)
-            return Matrix4(r.x, r.y, r.z, 0.0F, u.x, u.y, u.z, 0.0F, d.x, d.y, d.z, 0.0F, pos.x, pos.y, pos.z, 1.0F)
+            return Matrix4(r.x, r.y, r.z, 0F, u.x, u.y, u.z, 0F, d.x, d.y, d.z, 0F, pos.x, pos.y, pos.z, 1F)
         }
 
         fun createFromPositionRotationScale(position: Vector3, rotation: Matrix4, scale: Vector3): Matrix4 {
@@ -350,7 +356,7 @@ data class Matrix4(
             val m21 = rotation.m21 * scale.y
             val m22 = rotation.m22 * scale.z
             val m23 = position.z
-            return Matrix4(m00, m10, m20, 0.0F, m01, m11, m21, 0.0F, m02, m12, m22, 0.0F, m03, m13, m23, 1.0F)
+            return Matrix4(m00, m10, m20, 0F, m01, m11, m21, 0F, m02, m12, m22, 0F, m03, m13, m23, 1F)
         }
 
         fun createNormalTransform(matrix: Matrix4): Matrix4 {
@@ -366,7 +372,7 @@ data class Matrix4(
             val b09 = matrix.m12 * matrix.m23 - matrix.m22 * matrix.m13
             val b10 = matrix.m12 * matrix.m33 - matrix.m32 * matrix.m13
             val b11 = matrix.m22 * matrix.m33 - matrix.m32 * matrix.m23
-            val invDet = 1.0F / (b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06)
+            val invDet = 1F / (b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06)
             val t00 = (b11 * matrix.m11 - b10 * matrix.m21 + b09 * matrix.m31) * invDet
             val t01 = (b10 * matrix.m20 - b11 * matrix.m10 - b09 * matrix.m30) * invDet
             val t02 = (b05 * matrix.m13 - b04 * matrix.m23 + b03 * matrix.m33) * invDet
@@ -388,7 +394,7 @@ data class Matrix4(
             val m02 = t02 * row2
             val m12 = t12 * row2
             val m22 = t22 * row2
-            return Matrix4(m00, m10, m20, 0.0F, m01, m11, m21, 0.0F, m02, m12, m22, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F)
+            return Matrix4(m00, m10, m20, 0F, m01, m11, m21, 0F, m02, m12, m22, 0F, 0F, 0F, 0F, 1F)
         }
 
         fun createLookAt(eye: Vector3, at: Vector3, up: Vector3): Matrix4 {
@@ -398,55 +404,55 @@ data class Matrix4(
             val x = -r.dot(eye)
             val y = -u.dot(eye)
             val z = -d.dot(eye)
-            return Matrix4(r.x, u.x, d.x, 0.0F, r.y, u.y, d.y, 0.0F, r.z, u.z, d.z, 0.0F, x, y, z, 1.0F)
+            return Matrix4(r.x, u.x, d.x, 0F, r.y, u.y, d.y, 0F, r.z, u.z, d.z, 0F, x, y, z, 1F)
         }
 
         fun createOrthographic(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float): Matrix4 {
             if (left >= right) throw IllegalArgumentException("left >= right")
             if (bottom >= top) throw IllegalArgumentException("bottom >= top")
-            if (near <= 0.0F) throw IllegalArgumentException("near < 0")
-            if (far <= 0.0F) throw IllegalArgumentException("far <= 0")
+            if (near <= 0F) throw IllegalArgumentException("near < 0")
+            if (far <= 0F) throw IllegalArgumentException("far <= 0")
             if (near >= far) throw IllegalArgumentException("near >= far")
-            val m00 = 2.0F / (right - left)
-            val m11 = 2.0F / (top - bottom)
-            val m22 = -2.0F / (far - near)
+            val m00 = 2F / (right - left)
+            val m11 = 2F / (top - bottom)
+            val m22 = -2F / (far - near)
             val m03 = -((right + left) / (right - left))
             val m13 = -((top + bottom) / (top - bottom))
             val m23 = -((far + near) / (far - near))
-            return Matrix4(m00, 0.0F, 0.0F, 0.0F, 0.0F, m11, 0.0F, 0.0F, 0.0F, 0.0F, m22, 0.0F, m03, m13, m23, 1.0F)
+            return Matrix4(m00, 0F, 0F, 0F, 0F, m11, 0F, 0F, 0F, 0F, m22, 0F, m03, m13, m23, 1F)
         }
 
         fun createPerspectiveFov(fov: Float, aspectRatio: Float, near: Float, far: Float): Matrix4 {
-            if (fov <= 0.0F) throw IllegalArgumentException("fov <= 0")
+            if (fov <= 0F) throw IllegalArgumentException("fov <= 0")
             if (fov >= Math.PI) throw IllegalArgumentException("fov >= PI")
-            if (near <= 0.0F) throw IllegalArgumentException("near < 0")
-            if (far <= 0.0F) throw IllegalArgumentException("far <= 0")
+            if (near <= 0F) throw IllegalArgumentException("near < 0")
+            if (far <= 0F) throw IllegalArgumentException("far <= 0")
             if (near >= far) throw IllegalArgumentException("near >= far")
-            val rangeInv = 1.0F / (near - far)
+            val rangeInv = 1F / (near - far)
             val m11 = tan(HALF_PI - 0.5F * fov)
             val m00 = m11 / aspectRatio
             val m22 = (far + near) * rangeInv
-            val m23 = 2.0F * far * near * rangeInv
-            return Matrix4(m00, 0.0F, 0.0F, 0.0F, 0.0F, m11, 0.0F, 0.0F, 0.0F, 0.0F, m22, -1.0F, 0.0F, 0.0F, m23, 0.0F)
+            val m23 = 2F * far * near * rangeInv
+            return Matrix4(m00, 0F, 0F, 0F, 0F, m11, 0F, 0F, 0F, 0F, m22, -1F, 0F, 0F, m23, 0F)
         }
 
         fun createReflection(plane: Plane): Matrix4 {
-            val fa = -2.0F * plane.normal.x
-            val fb = -2.0F * plane.normal.y
-            val fc = -2.0F * plane.normal.z
-            val m00 = fa * plane.normal.x + 1.0F
+            val fa = -2F * plane.normal.x
+            val fb = -2F * plane.normal.y
+            val fc = -2F * plane.normal.z
+            val m00 = fa * plane.normal.x + 1F
             val m01 = fa * plane.normal.y
             val m02 = fa * plane.normal.z
             val m03 = fa * plane.distance
             val m10 = fb * plane.normal.x
-            val m11 = fb * plane.normal.y + 1.0F
+            val m11 = fb * plane.normal.y + 1F
             val m12 = fb * plane.normal.z
             val m13 = fb * plane.distance
             val m20 = fc * plane.normal.x
             val m21 = fc * plane.normal.y
-            val m22 = fc * plane.normal.z + 1.0F
+            val m22 = fc * plane.normal.z + 1F
             val m23 = fc * plane.distance
-            return Matrix4(m00, m10, m20, 0.0F, m01, m11, m21, 0.0F, m02, m12, m22, 0.0F, m03, m13, m23, 1.0F)
+            return Matrix4(m00, m10, m20, 0F, m01, m11, m21, 0F, m02, m12, m22, 0F, m03, m13, m23, 1F)
         }
     }
 }

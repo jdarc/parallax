@@ -18,8 +18,4 @@
  */
 package com.zynaps.parallax.core
 
-enum class Containment {
-    INSIDE,
-    PARTIAL,
-    OUTSIDE
-}
+enum class Containment { INSIDE, PARTIAL, OUTSIDE }

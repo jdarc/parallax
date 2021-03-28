@@ -20,7 +20,6 @@ package com.zynaps.parallax.math
 
 import kotlin.random.Random
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "DuplicatedCode", "SpellCheckingInspection", "NOTHING_TO_INLINE")
 object Random {
 
     private var random: ThreadLocal<Random> = ThreadLocal.withInitial { Random(seed) }

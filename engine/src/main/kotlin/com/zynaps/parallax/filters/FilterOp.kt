@@ -20,7 +20,6 @@ package com.zynaps.parallax.filters
 
 import com.zynaps.parallax.core.Color
 
-@Suppress("unused")
 interface FilterOp {
 
     object SOURCE : FilterOp {

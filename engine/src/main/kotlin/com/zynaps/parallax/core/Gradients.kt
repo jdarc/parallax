@@ -20,7 +20,6 @@ package com.zynaps.parallax.core
 
 import java.lang.Math.fma
 
-@Suppress("DuplicatedCode", "PropertyName")
 internal class Gradients {
 
     var _1OverZdX = 0.0F

@@ -26,7 +26,6 @@ import java.awt.image.AffineTransformOp
 import java.awt.image.BufferedImage
 import java.awt.image.DataBufferInt
 
-@Suppress("unused")
 class Bitmap(val image: BufferedImage) {
     val width get() = image.width
     val height get() = image.height

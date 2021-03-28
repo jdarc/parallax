@@ -20,16 +20,15 @@ package com.zynaps.parallax.math
 
 import com.zynaps.parallax.math.Scalar.EPSILON
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "DuplicatedCode", "SpellCheckingInspection", "NOTHING_TO_INLINE")
-data class Plane(inline val normal: Vector3, inline val distance: Float) {
+data class Plane(val normal: Vector3, val distance: Float) {
 
     constructor(x: Float, y: Float, z: Float, d: Float) : this(Vector3(x, y, z), d)
 
-    inline fun dot(x: Float, y: Float, z: Float) = (normal.x * x) + (normal.y * y) + (normal.z * z) + distance
+    fun dot(x: Float, y: Float, z: Float) = (normal.x * x) + (normal.y * y) + (normal.z * z) + distance
 
-    inline fun dot(rhs: Vector3) = (normal.x * rhs.x) + (normal.y * rhs.y) + (normal.z * rhs.z) + distance
+    fun dot(rhs: Vector3) = (normal.x * rhs.x) + (normal.y * rhs.y) + (normal.z * rhs.z) + distance
 
-    inline fun dot(rhs: Vector4) = (normal.x * rhs.x) + (normal.y * rhs.y) + (normal.z * rhs.z) + (distance * rhs.w)
+    fun dot(rhs: Vector4) = (normal.x * rhs.x) + (normal.y * rhs.y) + (normal.z * rhs.z) + (distance * rhs.w)
 
     companion object {
 

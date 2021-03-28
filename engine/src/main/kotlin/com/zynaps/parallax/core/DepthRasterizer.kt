@@ -44,9 +44,7 @@ internal class DepthRasterizer : Rasterizer {
                     val x2 = min(device.width, ceil(fragment.getRightX(yy - fragment.rightY)))
                     var sz = fma(fragment._zOverZdX, (x1 - lx), fragment.getZ(yy - fragment.leftY))
                     for (x in offset + x1 until offset + x2) {
-                        if (sz < device.depthBuffer[x]) {
-                            device.depthBuffer[x] = sz
-                        }
+                        if (sz < device.depthBuffer[x]) device.depthBuffer[x] = sz
                         sz += fragment._zOverZdX
                     }
                 }

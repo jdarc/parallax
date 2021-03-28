@@ -22,14 +22,12 @@ import com.zynaps.parallax.math.Vector2
 import com.zynaps.parallax.math.Vector3
 import java.util.*
 
-@Suppress("unused", "SpellCheckingInspection", "MemberVisibilityCanBePrivate")
 class Assembler {
     private val vertices = mutableListOf<Vector3>()
     private val vertexNormals = mutableListOf<Vector3>()
     private val triangleNormals = mutableListOf<Vector3>()
     private val textureCoordinates = mutableListOf<Vector2>()
     private val triangleGroups = mutableMapOf<String, MutableList<Triangle>>()
-    private var compiled = mutableMapOf<Material, Mesh>()
 
     var name = "object"
     var group = "group"
@@ -52,26 +50,20 @@ class Assembler {
     fun groupByName(name: String): List<Triangle> = triangleGroups.getOrElse(name, { emptyList() })
 
     fun vertex(v: Vector3) = vertex(v.x, v.y, v.z)
-
     fun vertex(data: Array<Float>) = vertex(data[0], data[1], data[2])
-
     fun vertex(x: Float, y: Float, z: Float) {
         vertices.add(Vector3(x, y, z))
         vertexNormals.add(Vector3.ZERO)
     }
 
     fun normal(v: Vector3) = normal(v.x, v.y, v.z)
-
     fun normal(data: Array<Float>) = normal(data[0], data[1], data[2])
-
     fun normal(x: Float, y: Float, z: Float) {
         triangleNormals.add(Vector3(x, y, z).normalize())
     }
 
     fun uv(v: Vector3) = uv(v.x, v.y)
-
     fun uv(data: Array<Float>) = uv(data[0], data[1])
-
     fun uv(u: Float, v: Float) {
         textureCoordinates.add(Vector2(u, 1.0F - v))
     }
@@ -124,12 +116,14 @@ class Assembler {
     }
 
     private fun toVertex(modifier: Triangle, vidx: Int, nidx: Int, tidx: Int) =
-        Vertex(vertices[vidx],
+        Vertex(
+            vertices[vidx],
             when {
-                modifier.normalType == Normal.VERTEX && (vidx < vertexNormals.size) -> vertexNormals[vidx]
-                modifier.normalType == Normal.TRIANGLE && (nidx < triangleNormals.size) -> triangleNormals[nidx]
+                modifier.shading == Shading.SMOOTH && (vidx < vertexNormals.size) -> vertexNormals[vidx]
+                modifier.shading == Shading.NORMAL && (nidx < triangleNormals.size) -> triangleNormals[nidx]
                 else -> modifier.normal
-            }, if (tidx < textureCoordinates.size) textureCoordinates[tidx] else Vector2.ZERO)
+            }, if (tidx < textureCoordinates.size) textureCoordinates[tidx] else Vector2.ZERO
+        )
 
     private fun toBuffer(vertices: List<Vertex>) =
         vertices.flatMap { listOf(it.vx, it.vy, it.vz, it.nx, it.ny, it.nz, it.tu, it.tv) }.toFloatArray()

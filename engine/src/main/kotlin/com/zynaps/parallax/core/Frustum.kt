@@ -23,7 +23,6 @@ import com.zynaps.parallax.math.Matrix4
 import com.zynaps.parallax.math.Plane.Companion.create
 import com.zynaps.parallax.math.Vector3
 
-@Suppress("MemberVisibilityCanBePrivate", "unused", "DuplicatedCode")
 class Frustum(view: Matrix4, projection: Matrix4) {
 
     private val matView = view

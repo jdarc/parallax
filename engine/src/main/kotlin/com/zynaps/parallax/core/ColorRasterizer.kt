@@ -24,7 +24,6 @@ import com.zynaps.parallax.math.Scalar.min
 import com.zynaps.parallax.system.Parallel
 import java.lang.Math.fma
 
-@Suppress("LocalVariableName", "SpellCheckingInspection")
 internal class ColorRasterizer : Rasterizer {
 
     override fun clear(device: Device, color: Int, depth: Float) {
@@ -64,16 +63,16 @@ internal class ColorRasterizer : Rasterizer {
                     var tvOverZ = fma(fragment.tvOverZdX, preStep, fragment.getTvOverZ(delta))
                     for (x in offset + x1 until offset + x2) {
                         if (z1 <= depthBuffer[x]) {
-                            val oz = 1.0F / _1OverZ
-                            val nz = 511.0F * oz
+                            val oz = 1F / _1OverZ
+                            val nz = 511F * oz
                             val tu = tuOverZ * oz
                             val tv = tvOverZ * oz
                             colrArray[x] = diff.sample(tu, tv)
                             specArray[x] = spec.sample(tu, tv) or glos
                             emitArray[x] = emit.sample(tu, tv)
-                            val nr = fma(nxOverZ, nz, 512.0F).toInt()
-                            val ng = fma(nyOverZ, nz, 512.0F).toInt()
-                            val nb = fma(nzOverZ, nz, 512.0F).toInt()
+                            val nr = fma(nxOverZ, nz, 512F).toInt()
+                            val ng = fma(nyOverZ, nz, 512F).toInt()
+                            val nb = fma(nzOverZ, nz, 512F).toInt()
                             normArray[x] = nr.shl(20) or ng.shl(10) or nb
                         }
                         z1 += fragment._zOverZdX

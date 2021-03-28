@@ -21,7 +21,6 @@ package com.zynaps.parallax.graph
 import com.zynaps.parallax.core.Device
 import com.zynaps.parallax.core.Geometry
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 open class LeafNode(val geometry: Geometry) : Node() {
 
     override val localBounds get() = geometry.localBounds

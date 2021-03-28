@@ -25,7 +25,6 @@ import com.zynaps.parallax.math.Scalar.pow
 import com.zynaps.parallax.math.Scalar.sqrt
 import java.util.*
 
-@Suppress("MemberVisibilityCanBePrivate", "DuplicatedCode")
 class HeightField(val resX: Int, val resZ: Int) {
 
     private val heightField: FloatArray = FloatArray(resX * resZ)

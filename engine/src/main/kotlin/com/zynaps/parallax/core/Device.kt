@@ -97,29 +97,53 @@ class Device(val bitmap: Bitmap) {
         stats.stop()
     }
 
-    private fun renderBack(stack: SpanBuffer, delta: Int, g: Gradients, e0: Edge, e1: Edge, e2: Edge, a: Vertex, b: Vertex, c: Vertex, d: Vertex, e: Vertex) =
+    private fun renderBack(
+        stack: SpanBuffer,
+        delta: Int,
+        g: Gradients,
+        e0: Edge,
+        e1: Edge,
+        e2: Edge,
+        a: Vertex,
+        b: Vertex,
+        c: Vertex,
+        d: Vertex,
+        e: Vertex
+    ) =
         when (delta) {
             3 -> renderFront(stack, delta, g, e0, e1, e2, c, b, a, a, a)
             4 -> renderFront(stack, delta, g, e0, e1, e2, d, c, b, a, a)
             else -> renderFront(stack, delta, g, e0, e1, e2, e, d, c, b, a)
         }
 
-    private fun renderFront(stack: SpanBuffer, delta: Int, g: Gradients, e0: Edge, e1: Edge, e2: Edge, a: Vertex, b: Vertex, c: Vertex, d: Vertex, e: Vertex) {
+    private fun renderFront(
+        stack: SpanBuffer,
+        delta: Int,
+        g: Gradients,
+        e0: Edge,
+        e1: Edge,
+        e2: Edge,
+        a: Vertex,
+        b: Vertex,
+        c: Vertex,
+        d: Vertex,
+        e: Vertex
+    ) {
         if (delta < 3 || backFacing(a, b, c)) return
 
-        a.toScreen(width, height)
-        b.toScreen(width, height)
-        c.toScreen(width, height)
+        a.scale(width, height)
+        b.scale(width, height)
+        c.scale(width, height)
 
         g.configure(a, b, c)
         edgeSort(stack, g, e0, e1, e2, a, b, c)
 
         if (delta < 4) return
-        d.toScreen(width, height)
+        d.scale(width, height)
         edgeSort(stack, g, e0, e1, e2, a, c, d)
 
         if (delta < 5) return
-        e.toScreen(width, height)
+        e.scale(width, height)
         edgeSort(stack, g, e0, e1, e2, a, d, e)
     }
 

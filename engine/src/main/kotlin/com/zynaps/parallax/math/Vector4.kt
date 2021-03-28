@@ -26,10 +26,11 @@ import com.zynaps.parallax.math.Scalar.min
 import com.zynaps.parallax.math.Scalar.sqr
 import com.zynaps.parallax.math.Scalar.sqrt
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "DuplicatedCode", "SpellCheckingInspection", "NOTHING_TO_INLINE")
-data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float, inline val w: Float) {
+data class Vector4(val x: Float, val y: Float, val z: Float, val w: Float) {
 
-    constructor(value: Float) : this(value, value, value, value)
+    constructor(x: Number, y: Number, z: Number, w: Number) : this(x.toFloat(), y.toFloat(), z.toFloat(), w.toFloat())
+
+    constructor(value: Number) : this(value.toFloat(), value.toFloat(), value.toFloat(), value.toFloat())
 
     constructor(value: Vector2, z: Float, w: Float) : this(value.x, value.y, z, w)
 
@@ -37,25 +38,25 @@ data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float
 
     constructor(src: FloatArray, offset: Int = 0) : this(src[offset + 0], src[offset + 1], src[offset + 2], src[offset + 3])
 
-    inline val length get() = sqrt(lengthSquared)
+    val length get() = sqrt(lengthSquared)
 
-    inline val lengthSquared get() = (x * x) + (y * y) + (z * z) + (w * w)
+    val lengthSquared get() = (x * x) + (y * y) + (z * z) + (w * w)
 
-    inline operator fun unaryMinus() = Vector4(-x, -y, -z, -w)
+    operator fun unaryMinus() = Vector4(-x, -y, -z, -w)
 
-    inline operator fun plus(rhs: Float) = Vector4(x + rhs, y + rhs, z + rhs, w + rhs)
+    operator fun plus(rhs: Float) = Vector4(x + rhs, y + rhs, z + rhs, w + rhs)
 
-    inline operator fun plus(rhs: Vector4) = Vector4(x + rhs.x, y + rhs.y, z + rhs.z, w + rhs.w)
+    operator fun plus(rhs: Vector4) = Vector4(x + rhs.x, y + rhs.y, z + rhs.z, w + rhs.w)
 
-    inline operator fun minus(rhs: Float) = Vector4(x - rhs, y - rhs, z - rhs, w - rhs)
+    operator fun minus(rhs: Float) = Vector4(x - rhs, y - rhs, z - rhs, w - rhs)
 
-    inline operator fun minus(rhs: Vector4) = Vector4(x - rhs.x, y - rhs.y, z - rhs.z, w - rhs.w)
+    operator fun minus(rhs: Vector4) = Vector4(x - rhs.x, y - rhs.y, z - rhs.z, w - rhs.w)
 
-    inline operator fun times(rhs: Float) = Vector4(x * rhs, y * rhs, z * rhs, w * rhs)
+    operator fun times(rhs: Float) = Vector4(x * rhs, y * rhs, z * rhs, w * rhs)
 
-    inline operator fun times(rhs: Vector4) = Vector4(x * rhs.x, y * rhs.y, z * rhs.z, w * rhs.w)
+    operator fun times(rhs: Vector4) = Vector4(x * rhs.x, y * rhs.y, z * rhs.z, w * rhs.w)
 
-    inline operator fun times(matrix: Matrix4): Vector4 {
+    operator fun times(matrix: Matrix4): Vector4 {
         val tx = (x * matrix.m00) + (y * matrix.m10) + (z * matrix.m20) + (w * matrix.m30)
         val ty = (x * matrix.m01) + (y * matrix.m11) + (z * matrix.m21) + (w * matrix.m31)
         val tz = (x * matrix.m02) + (y * matrix.m12) + (z * matrix.m22) + (w * matrix.m32)
@@ -63,7 +64,7 @@ data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float
         return Vector4(tx, ty, tz, tw)
     }
 
-    inline operator fun times(rotation: Quaternion): Vector4 {
+    operator fun times(rotation: Quaternion): Vector4 {
         val rx = rotation.x + rotation.x
         val ry = rotation.y + rotation.y
         val rz = rotation.z + rotation.z
@@ -76,17 +77,17 @@ data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float
         val yy = rotation.y * ry
         val yz = rotation.y * rz
         val zz = rotation.z * rz
-        val vx = x * (1.0F - yy - zz) + y * (xy - wz) + z * (xz + wy)
-        val vy = x * (xy + wz) + y * (1.0F - xx - zz) + z * (yz - wx)
-        val vz = x * (xz - wy) + y * (yz + wx) + z * (1.0F - xx - yy)
+        val vx = x * (1F - yy - zz) + y * (xy - wz) + z * (xz + wy)
+        val vy = x * (xy + wz) + y * (1F - xx - zz) + z * (yz - wx)
+        val vz = x * (xz - wy) + y * (yz + wx) + z * (1F - xx - yy)
         return Vector4(vx, vy, vz, w)
     }
 
-    inline operator fun div(rhs: Float) = Vector4(x / rhs, y / rhs, z / rhs, w / rhs)
+    operator fun div(rhs: Float) = Vector4(x / rhs, y / rhs, z / rhs, w / rhs)
 
-    inline operator fun div(rhs: Vector4) = Vector4(x / rhs.x, y / rhs.y, z / rhs.z, w / rhs.w)
+    operator fun div(rhs: Vector4) = Vector4(x / rhs.x, y / rhs.y, z / rhs.z, w / rhs.w)
 
-    inline operator fun get(index: Int) = when (index) {
+    operator fun get(index: Int) = when (index) {
         0 -> x
         1 -> y
         2 -> z
@@ -94,11 +95,11 @@ data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float
         else -> throw IndexOutOfBoundsException()
     }
 
-    inline fun abs() = Vector4(abs(x), abs(y), abs(z), abs(w))
+    fun abs() = Vector4(abs(x), abs(y), abs(z), abs(w))
 
-    inline fun angle(rhs: Vector4) = acos((dot(rhs) / (length * rhs.length)).coerceIn(-1.0F, 1.0F))
+    fun angle(rhs: Vector4) = acos((dot(rhs) / (length * rhs.length)).coerceIn(-1F, 1F))
 
-    inline fun clamp(min: Float, max: Float): Vector4 {
+    fun clamp(min: Float, max: Float): Vector4 {
         val x1 = x.coerceIn(min, max)
         val y1 = y.coerceIn(min, max)
         val z1 = z.coerceIn(min, max)
@@ -106,7 +107,7 @@ data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float
         return Vector4(x1, y1, z1, w1)
     }
 
-    inline fun clamp(min: Vector4, max: Vector4): Vector4 {
+    fun clamp(min: Vector4, max: Vector4): Vector4 {
         val x1 = x.coerceIn(min.x, max.x)
         val y1 = y.coerceIn(min.y, max.y)
         val z1 = z.coerceIn(min.z, max.z)
@@ -114,23 +115,23 @@ data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float
         return Vector4(x1, y1, z1, w1)
     }
 
-    inline fun clampMax(max: Float) = Vector4(min(x, max), min(y, max), min(z, max), min(w, max))
+    fun clampMax(max: Float) = Vector4(min(x, max), min(y, max), min(z, max), min(w, max))
 
-    inline fun clampMin(min: Float) = Vector4(max(x, min), max(y, min), max(z, min), max(w, min))
+    fun clampMin(min: Float) = Vector4(max(x, min), max(y, min), max(z, min), max(w, min))
 
-    inline fun distance(rhs: Vector4) = sqrt(distanceSquared(rhs))
+    fun distance(rhs: Vector4) = sqrt(distanceSquared(rhs))
 
-    inline fun distanceSquared(rhs: Vector4) = sqr(x - rhs.x) + sqr(y - rhs.y) + sqr(z - rhs.z) + sqr(w - rhs.w)
+    fun distanceSquared(rhs: Vector4) = sqr(x - rhs.x) + sqr(y - rhs.y) + sqr(z - rhs.z) + sqr(w - rhs.w)
 
-    inline fun dot(rhs: Vector4) = (x * rhs.x) + (y * rhs.y) + (z * rhs.z) + (w * rhs.w)
+    fun dot(rhs: Vector4) = (x * rhs.x) + (y * rhs.y) + (z * rhs.z) + (w * rhs.w)
 
-    inline fun equals(rhs: Vector4, epsilon: Float = EPSILON): Boolean {
+    fun equals(rhs: Vector4, epsilon: Float = EPSILON): Boolean {
         return Scalar.equals(x, rhs.x, epsilon) && Scalar.equals(y, rhs.y, epsilon) &&
-                Scalar.equals(z, rhs.z, epsilon) && Scalar.equals(w, rhs.w, epsilon)
+               Scalar.equals(z, rhs.z, epsilon) && Scalar.equals(w, rhs.w, epsilon)
     }
 
-    inline fun lerp(rhs: Vector4, alpha: Float): Vector4 {
-        val t = 1.0F - alpha
+    fun lerp(rhs: Vector4, alpha: Float): Vector4 {
+        val t = 1F - alpha
         val x1 = (x * t) + (rhs.x * alpha)
         val y1 = (y * t) + (rhs.y * alpha)
         val z1 = (z * t) + (rhs.z * alpha)
@@ -138,24 +139,26 @@ data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float
         return Vector4(x1, y1, z1, w1)
     }
 
-    inline fun max(x: Float, y: Float, z: Float, w: Float) = Vector4(max(this.x, x), max(this.y, y), max(this.z, z), max(this.w, w))
+    fun max(x: Float, y: Float, z: Float, w: Float) = Vector4(max(this.x, x), max(this.y, y), max(this.z, z), max(this.w, w))
 
-    inline fun max(rhs: Vector4) = max(rhs.x, rhs.y, rhs.z, rhs.w)
+    fun max(rhs: Vector4) = max(rhs.x, rhs.y, rhs.z, rhs.w)
 
-    inline fun min(x: Float, y: Float, z: Float, w: Float) = Vector4(min(this.x, x), min(this.y, y), min(this.z, z), min(this.w, w))
+    fun min(x: Float, y: Float, z: Float, w: Float) = Vector4(min(this.x, x), min(this.y, y), min(this.z, z), min(this.w, w))
 
-    inline fun min(rhs: Vector4) = min(rhs.x, rhs.y, rhs.z, rhs.w)
+    fun min(rhs: Vector4) = min(rhs.x, rhs.y, rhs.z, rhs.w)
 
-    inline fun normalize(vector: Vector4) = vector * (1.0F / vector.length)
+    fun normalize(vector: Vector4) = vector * (1F / vector.length)
 
-    inline fun project() = this * (1.0F / w)
+    fun project() = this * (1F / w)
 
-    inline fun squareRoot(vector: Vector4) = Vector4(sqrt(vector.x),
+    fun squareRoot(vector: Vector4) = Vector4(
+        sqrt(vector.x),
         sqrt(vector.y),
         sqrt(vector.z),
-        sqrt(vector.w))
+        sqrt(vector.w)
+    )
 
-    inline fun toArray(dst: FloatArray = FloatArray(4), offset: Int = 0) {
+    fun toArray(dst: FloatArray = FloatArray(4), offset: Int = 0) {
         dst[offset + 0] = x
         dst[offset + 1] = y
         dst[offset + 2] = z
@@ -163,21 +166,20 @@ data class Vector4(inline val x: Float, inline val y: Float, inline val z: Float
     }
 
     companion object {
+        val ZERO = Vector4(0)
 
-        val ZERO = Vector4(0.0F)
+        val ONE = Vector4(1)
+        val MINUS_ONE = Vector4(-1)
 
-        val ONE = Vector4(1.0F)
-        val MINUS_ONE = Vector4(-1.0F)
+        val UNIT_X = Vector4(1, 0, 0, 0)
+        val UNIT_Y = Vector4(0, 1, 0, 0)
+        val UNIT_Z = Vector4(0, 0, 1, 0)
+        val UNIT_W = Vector4(0, 0, 0, 1)
 
-        val UNIT_X = Vector4(1.0F, 0.0F, 0.0F, 0.0F)
-        val UNIT_Y = Vector4(0.0F, 1.0F, 0.0F, 0.0F)
-        val UNIT_Z = Vector4(0.0F, 0.0F, 1.0F, 0.0F)
-        val UNIT_W = Vector4(0.0F, 0.0F, 0.0F, 1.0F)
-
-        val MINUS_UNIT_X = Vector4(-1.0F, 0.0F, 0.0F, 0.0F)
-        val MINUS_UNIT_Y = Vector4(0.0F, -1.0F, 0.0F, 0.0F)
-        val MINUS_UNIT_Z = Vector4(0.0F, 0.0F, -1.0F, 0.0F)
-        val MINUS_UNIT_W = Vector4(0.0F, 0.0F, 0.0F, -1.0F)
+        val MINUS_UNIT_X = Vector4(-1, 0, 0, 0)
+        val MINUS_UNIT_Y = Vector4(0, -1, 0, 0)
+        val MINUS_UNIT_Z = Vector4(0, 0, -1, 0)
+        val MINUS_UNIT_W = Vector4(0, 0, 0, -1)
 
         val POSITIVE_INFINITY = Vector4(Float.POSITIVE_INFINITY)
         val NEGATIVE_INFINITY = Vector4(Float.NEGATIVE_INFINITY)

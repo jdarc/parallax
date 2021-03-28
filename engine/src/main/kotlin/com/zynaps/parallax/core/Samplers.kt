@@ -18,7 +18,6 @@
  */
 package com.zynaps.parallax.core
 
-@Suppress("unused")
 object Samplers {
 
     class Color(private val rgb: Int) : Sampler {

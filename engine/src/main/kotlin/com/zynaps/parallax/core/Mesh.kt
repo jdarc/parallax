@@ -21,7 +21,6 @@ package com.zynaps.parallax.core
 import com.zynaps.parallax.math.Aabb
 import java.util.*
 
-@Suppress("MemberVisibilityCanBePrivate")
 class Mesh(val vertexBuffer: FloatArray, val indexBuffer: IntArray) : Geometry {
 
     init {

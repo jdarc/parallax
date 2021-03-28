@@ -18,7 +18,6 @@
  */
 package com.zynaps.parallax.system
 
-@Suppress("unused")
 enum class LogLevel(val value: Int) {
     ALL(1),
     DEBUG(2),

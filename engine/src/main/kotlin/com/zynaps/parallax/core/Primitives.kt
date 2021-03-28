@@ -23,7 +23,6 @@ import com.zynaps.parallax.math.Scalar
 import com.zynaps.parallax.math.Vector3
 import java.util.*
 
-@Suppress("MemberVisibilityCanBePrivate", "SpellCheckingInspection")
 object Primitives {
 
     fun plane(texture: Material) = plane(1.0F, 1.0F, texture)
@@ -45,8 +44,8 @@ object Primitives {
         factory.uv(1.0F, 1.0F)
         factory.uv(0.0F, 1.0F)
 
-        factory.triangle(0, 1, 2).withNormals(0, 0, 0).withUvs(0, 1, 2).withMaterial(material)
-        factory.triangle(2, 3, 0).withNormals(0, 0, 0).withUvs(2, 3, 0).withMaterial(material)
+        factory.triangle(0, 1, 2).normals(0, 0, 0).uvs(0, 1, 2).material = material
+        factory.triangle(2, 3, 0).normals(0, 0, 0).uvs(2, 3, 0).material = material
 
         return factory
     }
@@ -79,18 +78,18 @@ object Primitives {
         factory.uv(1.0F, 1.0F)
         factory.uv(0.0F, 1.0F)
 
-        factory.triangle(0, 1, 2).withUvs(0, 1, 2).withNormals(0, 0, 0).withMaterial(material)
-        factory.triangle(2, 3, 0).withUvs(2, 3, 0).withNormals(0, 0, 0).withMaterial(material)
-        factory.triangle(1, 4, 7).withUvs(0, 1, 2).withNormals(1, 1, 1).withMaterial(material)
-        factory.triangle(7, 2, 1).withUvs(2, 3, 0).withNormals(1, 1, 1).withMaterial(material)
-        factory.triangle(4, 5, 6).withUvs(0, 1, 2).withNormals(2, 2, 2).withMaterial(material)
-        factory.triangle(6, 7, 4).withUvs(2, 3, 0).withNormals(2, 2, 2).withMaterial(material)
-        factory.triangle(0, 3, 6).withUvs(0, 1, 2).withNormals(3, 3, 3).withMaterial(material)
-        factory.triangle(6, 5, 0).withUvs(2, 3, 0).withNormals(3, 3, 3).withMaterial(material)
-        factory.triangle(0, 5, 4).withUvs(0, 1, 2).withNormals(4, 4, 4).withMaterial(material)
-        factory.triangle(4, 1, 0).withUvs(2, 3, 0).withNormals(4, 4, 4).withMaterial(material)
-        factory.triangle(3, 2, 7).withUvs(0, 1, 2).withNormals(5, 5, 5).withMaterial(material)
-        factory.triangle(7, 6, 3).withUvs(2, 3, 0).withNormals(5, 5, 5).withMaterial(material)
+        factory.triangle(0, 1, 2).normals(0, 0, 0).uvs(0, 1, 2).material = material
+        factory.triangle(2, 3, 0).normals(0, 0, 0).uvs(2, 3, 0).material = material
+        factory.triangle(1, 4, 7).normals(1, 1, 1).uvs(0, 1, 2).material = material
+        factory.triangle(7, 2, 1).normals(1, 1, 1).uvs(2, 3, 0).material = material
+        factory.triangle(4, 5, 6).normals(2, 2, 2).uvs(0, 1, 2).material = material
+        factory.triangle(6, 7, 4).normals(2, 2, 2).uvs(2, 3, 0).material = material
+        factory.triangle(0, 3, 6).normals(3, 3, 3).uvs(0, 1, 2).material = material
+        factory.triangle(6, 5, 0).normals(3, 3, 3).uvs(2, 3, 0).material = material
+        factory.triangle(0, 5, 4).normals(4, 4, 4).uvs(0, 1, 2).material = material
+        factory.triangle(4, 1, 0).normals(4, 4, 4).uvs(2, 3, 0).material = material
+        factory.triangle(3, 2, 7).normals(5, 5, 5).uvs(0, 1, 2).material = material
+        factory.triangle(7, 6, 3).normals(5, 5, 5).uvs(2, 3, 0).material = material
 
         return factory
     }
@@ -126,8 +125,8 @@ object Primitives {
                 val mb = stack + tindex + 1
                 val mc = stack + tindex + (stacks + 1) + 1
                 val md = stack + tindex + (stacks + 1)
-                factory.triangle(md, ma, mb).withUvs(md, ma, mb).withNormals(md, ma, mb).withMaterial(material)
-                factory.triangle(mb, mc, md).withUvs(mb, mc, md).withNormals(mb, mc, md).withMaterial(material)
+                factory.triangle(md, ma, mb).normals(md, ma, mb).uvs(md, ma, mb).material = material
+                factory.triangle(mb, mc, md).normals(mb, mc, md).uvs(mb, mc, md).material = material
             }
         }
 
@@ -176,8 +175,10 @@ object Primitives {
                 val mb = tindex + 1
                 val mc = tindex + (stacks + 2) + 1
                 val md = tindex + (stacks + 2)
-                factory.triangle(md, ma, mb).withUvs(md, ma, mb).withNormals(md, ma, mb).withMaterial(material)
-                factory.triangle(mb, mc, md).withUvs(mb, mc, md).withNormals(mb, mc, md).withMaterial(material)
+                val tri0 = factory.triangle(md, ma, mb).normals(md, ma, mb).uvs(md, ma, mb)
+                val tri1 = factory.triangle(mb, mc, md).normals(mb, mc, md).uvs(mb, mc, md)
+                tri0.material = material
+                tri1.material = material
                 tindex++
             }
         }
@@ -248,8 +249,8 @@ object Primitives {
                 val b = a + 1
                 val c = b + resx
                 val d = c - 1
-                factory.triangle(a, d, c).withUvs(a, d, c).withNormals(a, d, c).withMaterial(material)
-                factory.triangle(c, b, a).withUvs(c, b, a).withNormals(c, b, a).withMaterial(material)
+                factory.triangle(a, d, c).normals(a, d, c).uvs(a, d, c).material = material
+                factory.triangle(c, b, a).normals(c, b, a).uvs(c, b, a).material = material
             }
         }
         return factory

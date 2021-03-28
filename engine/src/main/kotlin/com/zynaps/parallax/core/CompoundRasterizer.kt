@@ -18,7 +18,6 @@
  */
 package com.zynaps.parallax.core
 
-@Suppress("MemberVisibilityCanBePrivate")
 class CompoundRasterizer(val first: Rasterizer, val second: Rasterizer) : Rasterizer {
 
     override fun clear(device: Device, color: Int, depth: Float) {

@@ -32,7 +32,6 @@ import java.awt.image.BufferedImage.TYPE_INT_ARGB
 import java.io.IOException
 import java.util.concurrent.ConcurrentHashMap
 
-@Suppress("SpellCheckingInspection")
 class WavefrontReader {
 
     private val textureCache = ConcurrentHashMap<String, BufferedImage>()
@@ -160,12 +159,12 @@ class WavefrontReader {
             vt[2] = extractVt(c)
             vn[2] = extractVn(c)
             val triangle = assembler.triangle(vx[0], vx[1], vx[2])
-            if (!vt.contains(-1)) triangle.withUvs(vt[0], vt[1], vt[2])
+            if (!vt.contains(-1)) triangle.uvs(vt[0], vt[1], vt[2])
             when {
-                !vn.contains(-1) -> triangle.withNormals(vn[0], vn[1], vn[2]).withNormalType(Normal.TRIANGLE)
-                else -> triangle.withNormalType(if (smooth) Normal.VERTEX else Normal.SURFACE)
+                !vn.contains(-1) -> triangle.normals(vn[0], vn[1], vn[2]).shading = Shading.NORMAL
+                else -> triangle.shading = if (smooth) Shading.SMOOTH else Shading.FLAT
             }
-            triangle.withMaterial(material)
+            triangle.material = material
         }
     }
 

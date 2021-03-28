@@ -26,7 +26,7 @@ internal class PlaneTest {
 
     @Test
     fun shouldCalculateDistanceOfPointToPlane() {
-        val distance = Plane.create(2.0F, 4.0F, 3.0F, 5.0F).dot(Vector3(1.0F, 2.0F, 3.0F))
+        val distance = Plane.create(2F, 4F, 3F, 5F).dot(Vector3(1F, 2F, 3F))
         assertThat(distance).isCloseTo(4.456688F, ACCURACY)
     }
 }

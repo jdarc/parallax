@@ -18,7 +18,4 @@
  */
 package com.zynaps.parallax.core
 
-enum class CullMode {
-    FRONT,
-    BACK
-}
+enum class CullMode { FRONT, BACK }

@@ -18,8 +18,4 @@
  */
 package com.zynaps.parallax.core
 
-enum class Normal {
-    SURFACE,
-    VERTEX,
-    TRIANGLE
-}
+enum class Shading { FLAT, SMOOTH, NORMAL }

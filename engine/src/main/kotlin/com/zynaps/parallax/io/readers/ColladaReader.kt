@@ -85,7 +85,7 @@ class ColladaReader {
                     val i0 = polyList.p[offset + 0 * delta]
                     val i1 = polyList.p[offset + 1 * delta]
                     val i2 = polyList.p[offset + 2 * delta]
-                    assembler.triangle(i0, i1, i2).withMaterial(material)
+                    assembler.triangle(i0, i1, i2).material = material
                 }
             }
 

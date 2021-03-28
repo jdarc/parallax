@@ -21,7 +21,6 @@ package com.zynaps.parallax.math
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "DuplicatedCode", "SpellCheckingInspection", "NOTHING_TO_INLINE")
 object Scalar {
     const val PI = 3.14159265359F
     const val TAU = 6.28318530718F
@@ -29,66 +28,63 @@ object Scalar {
     const val EPSILON = 0.00000001F
     const val LARGE = 1073741823.0
 
-    inline fun equals(a: Float, b: Float, epsilon: Float = EPSILON) = !(a - b).isNaN() && abs(a - b) <= epsilon
+    fun equals(a: Float, b: Float, epsilon: Float = EPSILON) = !(a - b).isNaN() && abs(a - b) <= epsilon
 
-    inline fun min(a: Int, b: Int) = if (a < b) a else b
+    fun min(a: Int, b: Int) = if (a < b) a else b
 
-    inline fun min(a: Float, b: Float) = if (a < b) a else b
+    fun min(a: Float, b: Float) = if (a < b) a else b
 
-    inline fun max(a: Int, b: Int) = if (a > b) a else b
+    fun max(a: Int, b: Int) = if (a > b) a else b
 
-    inline fun max(a: Float, b: Float) = if (a > b) a else b
+    fun max(a: Float, b: Float) = if (a > b) a else b
 
-    inline fun clamp(value: Int, min: Int, max: Int) = value.coerceIn(min, max)
+    fun clamp(value: Int, min: Int, max: Int) = value.coerceIn(min, max)
 
-    inline fun clamp(value: Float, min: Float, max: Float) = value.coerceIn(min, max)
+    fun clamp(value: Float, min: Float, max: Float) = value.coerceIn(min, max)
 
-    inline fun ceil(a: Float) = 0x3FFFFFFF - (LARGE - a).toInt()
+    fun ceil(a: Float) = 0x3FFFFFFF - (LARGE - a).toInt()
 
-    inline fun floor(a: Float) = (LARGE + a).toInt() - 0x3FFFFFFF
+    fun floor(a: Float) = (LARGE + a).toInt() - 0x3FFFFFFF
 
-    inline fun isPot(value: Int) = (value > 0) && (value and value - 1) == 0
+    fun isPot(value: Int) = (value > 0) && (value and value - 1) == 0
 
-    inline fun sqr(value: Float) = value * value
+    fun sqr(value: Float) = value * value
 
-    inline fun invSqrt(n: Float): Float {
-        val x = Float.fromBits(0x5f3759df - n.toRawBits().shr(1))
-        return x * (1.5F - 0.5F * n * x * x)
-    }
+    fun invSqrt(n: Float) = 1F / sqrt(n)
 
-    inline fun hypot(x: Float, y: Float) = sqrt(x * x + y * y)
+    fun hypot(x: Float, y: Float) = sqrt(x * x + y * y)
 
-    inline fun hypot(x: Float, y: Float, z: Float) = sqrt(x * x + y * y + z * z)
+    fun hypot(x: Float, y: Float, z: Float) = sqrt(x * x + y * y + z * z)
 
-    inline fun hypot(x: Float, y: Float, z: Float, w: Float) = sqrt(x * x + y * y + z * z + w * w)
+    fun hypot(x: Float, y: Float, z: Float, w: Float) = sqrt(x * x + y * y + z * z + w * w)
 
-    inline fun hypot(vararg values: Float) = sqrt(values.map { it * it }.sum())
+    fun hypot(vararg values: Float) = sqrt(values.map { it * it }.sum())
 
-    inline fun toRadians(degrees: Float) = degrees * PI / 180.0F
+    fun toRadians(degrees: Float) = degrees * PI / 180.0F
 
-    inline fun toDegrees(radians: Float) = radians * 180.0F / PI
+    fun toDegrees(radians: Float) = radians * 180.0F / PI
 
-    inline fun round(x: Float) = x.roundToInt()
+    fun round(x: Float) = x.roundToInt()
 
-    inline fun pow(x: Float, y: Float) = x.pow(y)
+    fun pow(x: Float, y: Float) = x.pow(y)
 
-    inline fun abs(value: Float) = kotlin.math.abs(value)
+    fun abs(value: Float) = kotlin.math.abs(value)
 
-    inline fun sqrt(x: Float) = kotlin.math.sqrt(x)
+    fun sqrt(x: Float) = kotlin.math.sqrt(x)
 
-    inline fun sin(a: Float) = kotlin.math.sin(a)
+    fun sin(a: Float) = kotlin.math.sin(a)
 
-    inline fun asin(a: Float) = kotlin.math.asin(a)
+    fun asin(a: Float) = kotlin.math.asin(a)
 
-    inline fun cos(a: Float) = kotlin.math.cos(a)
+    fun cos(a: Float) = kotlin.math.cos(a)
 
-    inline fun acos(a: Float) = kotlin.math.acos(a)
+    fun acos(a: Float) = kotlin.math.acos(a)
 
-    inline fun atan(a: Float) = kotlin.math.atan(a)
+    fun atan(a: Float) = kotlin.math.atan(a)
 
-    inline fun atan2(y: Float, x: Float) = kotlin.math.atan2(y, x)
+    fun atan2(y: Float, x: Float) = kotlin.math.atan2(y, x)
 
-    inline fun tan(x: Float) = kotlin.math.tan(x)
+    fun tan(x: Float) = kotlin.math.tan(x)
 
-    inline fun log2(x: Float) = kotlin.math.log2(x)
+    fun log2(x: Float) = kotlin.math.log2(x)
 }

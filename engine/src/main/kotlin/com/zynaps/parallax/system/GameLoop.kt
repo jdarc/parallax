@@ -21,7 +21,6 @@ package com.zynaps.parallax.system
 import com.zynaps.parallax.math.Scalar.max
 import javax.swing.Timer
 
-@Suppress("MemberVisibilityCanBePrivate")
 class GameLoop(val game: Game) {
     private val timer: Timer
     private var tock: Long = 0

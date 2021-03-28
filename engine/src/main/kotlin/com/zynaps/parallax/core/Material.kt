@@ -20,7 +20,6 @@ package com.zynaps.parallax.core
 
 import java.awt.image.BufferedImage
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 class Material private constructor(
     val name: String,
     var ambient: Sampler,

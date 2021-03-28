@@ -21,7 +21,6 @@ package com.zynaps.parallax.graph
 import com.zynaps.parallax.math.Aabb
 import com.zynaps.parallax.math.Matrix4
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 open class BranchNode(transform: Matrix4 = Matrix4.IDENTITY) : Node(transform) {
 
     protected val children = mutableListOf<Node>()
