@@ -1,20 +1,18 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.0-M1"
+    id("org.jetbrains.kotlin.jvm") version "1.5.31"
 }
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 allprojects {
     apply(plugin = "kotlin")
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "11"
+            version = 16
+            jvmTarget = "16"
             languageVersion = "1.5"
-            useIR = true
         }
     }
 }

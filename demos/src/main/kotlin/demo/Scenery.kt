@@ -105,7 +105,7 @@ class Scenery(private val sceneGraph: SceneGraph, private val loader: ResourceLo
 
     fun addImported(name: String = "simba.obj", position: Vector3 = Vector3(0.0F, 4.0F, 0.0F), scale: Float = 40.0F) {
         val geometry = Importer.load(loader, name)
-        geometry.localMatrix = Matrix4.createFromPositionRotationScale(position, Matrix4.createRotationY(Scalar.PI), Vector3(scale, scale, scale))
+        geometry.localMatrix = Matrix4.createFromPositionRotationScale(position, Matrix4.createRotationY(0F), Vector3(scale, scale, scale))
         sceneGraph.root.add(geometry)
     }
 
