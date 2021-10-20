@@ -61,7 +61,7 @@ class Viewer(private val sceneGraph: SceneGraph) : JComponent() {
         camera.moveTo(50.0F, 0.0F, 0.0F)
         controller = OrbitController(camera)
 
-        load(File("/home/jean/Documents/3D/dino-rider.obj"))
+        load(File("/home/jean/Documents/3D/attack-droid.obj"))
 
         addComponentListener(object : ComponentAdapter() {
             override fun componentResized(e: ComponentEvent) {

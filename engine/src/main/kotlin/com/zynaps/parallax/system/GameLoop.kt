@@ -26,11 +26,16 @@ class GameLoop(val game: Game) {
     private var tock: Long = 0
 
     init {
+        var delta = 0.0
         timer = Timer(1) {
             val elapsed = (System.nanoTime() - tock) / 1000000.0
             tock = System.nanoTime()
             game.update(elapsed / 1000.0)
-            game.render()
+            if (delta > 15.0) {
+                delta = 0.0
+                game.render()
+            }
+            delta += elapsed
         }
     }
 

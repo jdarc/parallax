@@ -20,20 +20,34 @@ package demo.inspector
 
 import com.zynaps.parallax.system.LogLevel
 import com.zynaps.parallax.system.Logger
+import java.awt.Font
 import java.io.IOException
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
 import kotlin.system.exitProcess
 
+
 fun main() {
     Logger.level = LogLevel.INFO
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+    configureGlobalFont(Font("Liberation Sans", Font.PLAIN, 14))
     SwingUtilities.invokeLater {
         try {
             MainFrame().isVisible = true
         } catch (e: IOException) {
             Logger.error(e)
             exitProcess(0)
+        }
+    }
+}
+
+private fun configureGlobalFont(labelFont: Font) {
+    val defaults = UIManager.getDefaults()
+    for (key in defaults.keys()) {
+        if (defaults.getString(key) != null) {
+            val keyAsString = key.toString()
+            val keyName = if (keyAsString.endsWith("UI")) keyAsString.dropLast(2) else keyAsString
+            UIManager.put("$keyName.font", labelFont)
         }
     }
 }
