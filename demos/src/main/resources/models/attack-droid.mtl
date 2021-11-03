@@ -1,0 +1,23 @@
+newmtl mat_0-t_scorpion_headtail_d.jpg
+map_Kd t_scorpion_headtail_d.jpg
+
+newmtl mat_1-t_scorpion_saw_d.jpg
+map_Kd t_scorpion_saw_d.jpg
+
+newmtl mat_2-t_scorpion_torso_d.jpg
+map_Kd t_scorpion_torso_d.jpg
+
+newmtl mat_3-t_scorpion_eye_d.jpg
+map_Kd t_scorpion_eye_d.jpg
+
+newmtl mat_4-t_scorpion_headtail_d.jpg
+map_Kd t_scorpion_headtail_d.jpg
+
+newmtl mat_5-t_scorpion_headtail_d.jpg
+map_Kd t_scorpion_headtail_d.jpg
+
+newmtl mat_6-t_scorpion_headtail_d.jpg
+map_Kd t_scorpion_headtail_d.jpg
+
+newmtl mat_7-t_scorpion_limb_d.jpg
+map_Kd t_scorpion_limb_d.jpg

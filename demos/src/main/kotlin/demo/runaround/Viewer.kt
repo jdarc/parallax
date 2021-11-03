@@ -108,7 +108,7 @@ class Viewer : Canvas() {
 
     private fun createScene(): SceneGraph {
         val scene = SceneGraph()
-        val sceneMaker = Scenery(scene, ResourceLoader("/home/jean/Documents/3D/"))
+        val sceneMaker = Scenery(scene, ResourceLoader(this.javaClass.classLoader.getResource("models").path))
         sceneMaker.addPlane()
 //        sceneMaker.addCube(20.0F)
 //        sceneMaker.addSphere(12.0F)
