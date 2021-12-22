@@ -1,3 +1,3 @@
-rootProject.name = "Parallax"
+rootProject.name = "parallax"
 include("engine")
 include("demos")

@@ -25,15 +25,15 @@ import javax.imageio.ImageIO
 object Icons {
 
     object Toolbar {
-        fun file(color: Color) = readImage("file.png")
-        fun trash(color: Color) = readImage("trash.png")
-        fun diskette(color: Color) = readImage("diskette.png")
-        fun cube(color: Color) = readImage("cube.png")
-        fun capsule(color: Color) = readImage("capsule.png")
-        fun plane(color: Color) = readImage("plane.png")
-        fun sphere(color: Color) = readImage("sphere.png")
-        fun shapes(color: Color) = readImage("shapes.png")
-        fun vsync(color: Color) = readImage("vsync-off.png")
+        fun file(): BufferedImage = readImage("file.png")
+        fun trash(): BufferedImage = readImage("trash.png")
+        fun diskette(): BufferedImage = readImage("diskette.png")
+        fun cube(): BufferedImage = readImage("cube.png")
+        fun capsule(): BufferedImage = readImage("capsule.png")
+        fun plane(): BufferedImage = readImage("plane.png")
+        fun sphere(): BufferedImage = readImage("sphere.png")
+        fun shapes(): BufferedImage = readImage("shapes.png")
+        fun vsync(): BufferedImage = readImage("vsync-off.png")
     }
 
     object Tree {

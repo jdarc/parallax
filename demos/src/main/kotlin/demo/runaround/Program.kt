@@ -28,6 +28,7 @@ import kotlin.system.exitProcess
 
 fun main() {
     Logger.level = LogLevel.DEBUG
+    System.setProperty("sun.java2d.uiScale.enabled", "false")
     UIManager.put("Menu.font", Font("Space Mono", Font.PLAIN, 15))
     SwingUtilities.invokeLater {
         try {

@@ -29,6 +29,7 @@ import com.zynaps.parallax.toolkit.Visualizer
 import demo.FPSCounter
 import demo.Scenery
 import java.awt.*
+import java.io.File
 import kotlin.math.roundToInt
 
 class Viewer : Canvas() {
@@ -108,7 +109,7 @@ class Viewer : Canvas() {
 
     private fun createScene(): SceneGraph {
         val scene = SceneGraph()
-        val sceneMaker = Scenery(scene, ResourceLoader(this.javaClass.classLoader.getResource("models").path))
+        val sceneMaker = Scenery(scene, ResourceLoader(File(javaClass.classLoader.getResource("models").toURI()).path))
         sceneMaker.addPlane()
 //        sceneMaker.addCube(20.0F)
 //        sceneMaker.addSphere(12.0F)

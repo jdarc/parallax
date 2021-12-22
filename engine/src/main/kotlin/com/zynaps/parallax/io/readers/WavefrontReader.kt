@@ -30,6 +30,7 @@ import java.awt.image.AffineTransformOp.TYPE_BICUBIC
 import java.awt.image.BufferedImage
 import java.awt.image.BufferedImage.TYPE_INT_ARGB
 import java.io.IOException
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class WavefrontReader {
@@ -53,7 +54,7 @@ class WavefrontReader {
                     it.startsWith("vt ", true) -> assembler.uv(floats(it, "vt ".length))
                     it.startsWith("vn ", true) -> assembler.normal(floats(it, "vn ".length))
                     it.startsWith("f ", true) -> assembleFace(it, smooth, material, assembler)
-                    it.startsWith("s ", true) -> smooth = isSmoothing(it.substring("s ".length).trim().toLowerCase())
+                    it.startsWith("s ", true) -> smooth = isSmoothing(it.substring("s ".length).trim().lowercase(Locale.getDefault()))
                     it.startsWith("g ", true) -> assembler.group = it.substring("g ".length).trim()
                     it.startsWith("o ", true) -> assembler.name = it.substring("o ".length).trim()
                     it.startsWith("usemtl ", true) -> material = materials[it.substring("usemtl ".length)] ?: Material.DEFAULT

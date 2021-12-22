@@ -27,6 +27,7 @@ import java.awt.Toolkit
 import java.awt.event.AWTEventListener
 import java.awt.event.KeyEvent
 import java.awt.event.WindowEvent
+import javax.swing.ImageIcon
 import kotlin.system.exitProcess
 
 class MainFrame : Frame("Parallax 3D Graphics Engine"), Game, AWTEventListener {
@@ -38,6 +39,7 @@ class MainFrame : Frame("Parallax 3D Graphics Engine"), Game, AWTEventListener {
         layout = BorderLayout()
         viewer = Viewer()
         background = viewer.background
+        iconImage = ImageIcon(javaClass.getResource("/icon.png")).image
         add(viewer, BorderLayout.CENTER)
         pack()
         setLocationRelativeTo(null)

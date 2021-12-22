@@ -22,6 +22,7 @@ import com.zynaps.parallax.io.readers.ColladaReader
 import com.zynaps.parallax.io.readers.WavefrontReader
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 object Importer {
 
@@ -29,7 +30,7 @@ object Importer {
     fun load(file: File) = load(ResourceLoader(file.parent), file.name)
 
     @Throws(IOException::class)
-    fun load(loader: ResourceLoader, name: String) = when (val extension = name.substringAfterLast('.', "").trim().toLowerCase()) {
+    fun load(loader: ResourceLoader, name: String) = when (val extension = name.substringAfterLast('.', "").trim().lowercase(Locale.getDefault())) {
         "obj" -> WavefrontReader().load(loader, name).compile().toGraph()
         "dae" -> ColladaReader().load(loader, name)
         else -> throw UnsupportedFileFormat(extension)

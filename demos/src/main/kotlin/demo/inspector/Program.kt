@@ -26,9 +26,9 @@ import javax.swing.SwingUtilities
 import javax.swing.UIManager
 import kotlin.system.exitProcess
 
-
 fun main() {
     Logger.level = LogLevel.INFO
+    System.setProperty("sun.java2d.uiScale.enabled", "false")
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
     configureGlobalFont(Font("Liberation Sans", Font.PLAIN, 14))
     SwingUtilities.invokeLater {

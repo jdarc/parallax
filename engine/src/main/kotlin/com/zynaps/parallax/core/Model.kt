@@ -27,8 +27,8 @@ import com.zynaps.parallax.math.Matrix4
 class Model(val name: String, parts: Map<Material, Mesh> = HashMap()) {
 
     val localBounds = Aabb()
-    val vertexCount get() = parts.values.sumBy { it.sumBy { buffer -> buffer.vertexCount } }
-    val triangleCount get() = parts.values.sumBy { it.sumBy { buffer -> buffer.triangleCount } }
+    val vertexCount get() = parts.values.sumOf { it.sumOf { buffer -> buffer.vertexCount } }
+    val triangleCount get() = parts.values.sumOf { it.sumOf { buffer -> buffer.triangleCount } }
 
     private val parts = HashMap<Material, ArrayList<Mesh>>()
 

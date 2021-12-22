@@ -35,7 +35,7 @@ class Assembler {
     val vertexCount get() = vertices.size
     val normalCount get() = vertexNormals.size
     val uvCount get() = textureCoordinates.size
-    val triangleCount get() = triangleGroups.values.sumBy { it.size }
+    val triangleCount get() = triangleGroups.values.sumOf { it.size }
 
     fun clear() {
         vertices.clear()

@@ -125,38 +125,37 @@ class MainFrame : BaseFrame() {
     }
 
     private fun buildToolbar(): JComponent {
-        val blendColor = Color(32, 200, 64, 32)
         val insets = Insets(4, 4, 4, 8)
 
         val toolbar = JPanel()
         toolbar.border = EmptyBorder(2, 2, 2, 2)
         toolbar.layout = BoxLayout(toolbar, BoxLayout.X_AXIS)
 
-        val newButton = createButton("New", Icons.Toolbar.file(blendColor), KeyEvent.VK_N, insets)
+        val newButton = createButton("New", Icons.Toolbar.file(), KeyEvent.VK_N, insets)
         newButton.toolTipText = "Create a new empty scene"
         newButton.addActionListener { viewer.clear() }
 
-        val loadButton = createButton("Load...", Icons.Toolbar.diskette(blendColor), KeyEvent.VK_L, insets)
+        val loadButton = createButton("Load...", Icons.Toolbar.diskette(), KeyEvent.VK_L, insets)
         loadButton.toolTipText = "Load model from file system"
         loadButton.addActionListener { load() }
 
-        val plane = createButton("Plane", Icons.Toolbar.plane(blendColor), 0, insets)
+        val plane = createButton("Plane", Icons.Toolbar.plane(), 0, insets)
         plane.toolTipText = "Create a plane model"
         plane.addActionListener { addPlane() }
 
-        val cube = createButton("Cube", Icons.Toolbar.cube(blendColor), 0, insets)
+        val cube = createButton("Cube", Icons.Toolbar.cube(), 0, insets)
         cube.toolTipText = "Create a cube model"
         cube.addActionListener { addCube() }
 
-        val sphere = createButton("Sphere", Icons.Toolbar.sphere(blendColor), 0, insets)
+        val sphere = createButton("Sphere", Icons.Toolbar.sphere(), 0, insets)
         sphere.toolTipText = "Create a sphere model"
         sphere.addActionListener { addSphere() }
 
-        val capsule = createButton("Capsule", Icons.Toolbar.capsule(blendColor), 0, insets)
+        val capsule = createButton("Capsule", Icons.Toolbar.capsule(), 0, insets)
         capsule.toolTipText = "Create a capsule model"
         capsule.addActionListener { addCapsule() }
 
-        val vsyncButton = createToggleButton("V-Sync", Icons.Toolbar.vsync(blendColor), KeyEvent.VK_S, insets)
+        val vsyncButton = createToggleButton("V-Sync", Icons.Toolbar.vsync(), KeyEvent.VK_S, insets)
         vsyncButton.toolTipText = ""
         vsyncButton.addActionListener { toggleVSync() }
 
