@@ -19,9 +19,13 @@
 package com.zynaps.parallax.filters
 
 import com.zynaps.parallax.core.RenderBuffer
+import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.clamp
+import com.zynaps.parallax.math.Scalar.min
 import com.zynaps.parallax.math.Scalar.round
-import com.zynaps.parallax.system.Parallel
+import com.zynaps.parallax.system.Parallel.CPUS
+import com.zynaps.parallax.system.Parallel.F
+import java.util.concurrent.Callable
 import kotlin.math.pow
 
 class GammaFilter(src: RenderBuffer = RenderBuffer.ZERO, dst: RenderBuffer = src) : Filter {
@@ -40,16 +44,18 @@ class GammaFilter(src: RenderBuffer = RenderBuffer.ZERO, dst: RenderBuffer = src
         }
 
     override fun apply() {
-        val invGamma = 1.0F / gamma
-        val lut = IntArray(256)
-        for (i in 0 until 256) lut[i] = round((i / 255.0F).pow(invGamma) * 255.0F)
-        Parallel.partition(source.size) { _, from, to ->
-            for (x in from until to) {
+        F.invokeAll(genTasks(ceil(source.size.toFloat() / CPUS)))
+    }
+
+    private fun genTasks(size: Int) = (0 until source.size step size).map {
+        Callable {
+            val lut = IntArray(256) { round((it / 255.0F).pow(1.0F / gamma) * 255.0F) }
+            for (x in it until it + min(size, source.size - it)) {
                 val pixel = source[x]
-                val red = lut[0xFF and pixel.shr(16)]
-                val grn = lut[0xFF and pixel.shr(8)]
+                val red = lut[0xFF and pixel.shr(16)].shl(16)
+                val grn = lut[0xFF and pixel.shr(8)].shl(8)
                 val blu = lut[0xFF and pixel]
-                destination[x] = red.shl(16) or grn.shl(8) or blu
+                destination[x] = red or grn or blu
             }
         }
     }

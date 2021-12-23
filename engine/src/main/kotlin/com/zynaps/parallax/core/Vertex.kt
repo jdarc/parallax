@@ -21,7 +21,6 @@ package com.zynaps.parallax.core
 import com.zynaps.parallax.math.Matrix4
 import com.zynaps.parallax.math.Vector2
 import com.zynaps.parallax.math.Vector3
-import java.lang.Math.fma
 
 internal data class Vertex(
     var vx: Float = 0F, var vy: Float = 0F, var vz: Float = 0F, var vw: Float = 0F,
@@ -52,32 +51,32 @@ internal data class Vertex(
         val c = src[offset + 5]
         tu = src[offset + 6]
         tv = src[offset + 7]
-        vx = fma(world.m00, x, fma(world.m01, y, fma(world.m02, z, world.m03)))
-        vy = fma(world.m10, x, fma(world.m11, y, fma(world.m12, z, world.m13)))
-        vz = fma(world.m20, x, fma(world.m21, y, fma(world.m22, z, world.m23)))
-        vw = fma(world.m30, x, fma(world.m31, y, fma(world.m32, z, world.m33)))
-        nx = fma(normal.m00, a, fma(normal.m01, b, normal.m02 * c))
-        ny = fma(normal.m10, a, fma(normal.m11, b, normal.m12 * c))
-        nz = fma(normal.m20, a, fma(normal.m21, b, normal.m22 * c))
+        vx = world.m00 * x + world.m01 * y + world.m02 * z + world.m03
+        vy = world.m10 * x + world.m11 * y + world.m12 * z + world.m13
+        vz = world.m20 * x + world.m21 * y + world.m22 * z + world.m23
+        vw = world.m30 * x + world.m31 * y + world.m32 * z + world.m33
+        nx = normal.m00 * a + normal.m01 * b + normal.m02 * c
+        ny = normal.m10 * a + normal.m11 * b + normal.m12 * c
+        nz = normal.m20 * a + normal.m21 * b + normal.m22 * c
     }
 
     fun lerp(a: Vertex, b: Vertex, t: Float) {
-        vx = fma(t, b.vx - a.vx, a.vx)
-        vy = fma(t, b.vy - a.vy, a.vy)
-        vz = fma(t, b.vz - a.vz, a.vz)
-        vw = fma(t, b.vw - a.vw, a.vw)
-        nx = fma(t, b.nx - a.nx, a.nx)
-        ny = fma(t, b.ny - a.ny, a.ny)
-        nz = fma(t, b.nz - a.nz, a.nz)
-        tu = fma(t, b.tu - a.tu, a.tu)
-        tv = fma(t, b.tv - a.tv, a.tv)
+        vx = t * (b.vx - a.vx) + a.vx
+        vy = t * (b.vy - a.vy) + a.vy
+        vz = t * (b.vz - a.vz) + a.vz
+        vw = t * (b.vw - a.vw) + a.vw
+        nx = t * (b.nx - a.nx) + a.nx
+        ny = t * (b.ny - a.ny) + a.ny
+        nz = t * (b.nz - a.nz) + a.nz
+        tu = t * (b.tu - a.tu) + a.tu
+        tv = t * (b.tv - a.tv) + a.tv
     }
 
     fun scale(width: Int, height: Int) {
         vw = 1F / vw
-        vx = 0.5F * fma(vx, vw, 1F) * width
-        vy = 0.5F * fma(-vy, vw, 1F) * height
-        vz = 0.5F * fma(vz, vw, 1F)
+        vx = 0.5F * (vx * vw + 1F) * width
+        vy = 0.5F * (1F - vy * vw) * height
+        vz = 0.5F * (vz * vw + 1F)
         nx *= vw
         ny *= vw
         nz *= vw

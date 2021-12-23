@@ -95,9 +95,8 @@ class Light(color: Int = 0xFFFFFF) {
         return this
     }
 
-    fun trace(nx: Float, ny: Float, nz: Float, wx: Float, wy: Float, wz: Float): Float {
-        return clamp(tol.dot(nx, ny, nz) * if (castShadows) sample(wx, wy, wz) else 1.0F, 0.0F, 1.0F)
-    }
+    fun trace(nx: Float, ny: Float, nz: Float, wx: Float, wy: Float, wz: Float) =
+        clamp(tol.dot(nx, ny, nz) * sample(wx, wy, wz), 0.0F, 1.0F)
 
     fun render(sceneGraph: SceneGraph) {
         if (!castShadows) return
@@ -115,26 +114,29 @@ class Light(color: Int = 0xFFFFFF) {
         sceneGraph.render(view, proj, device)
     }
 
-    private fun sample(wx: Float, wy: Float, wz: Float): Float {
+    private fun sample(wx: Float, wy: Float, wz: Float) = if (castShadows) {
         val vx = combined.m00 * wx + combined.m01 * wy + combined.m02 * wz + combined.m03
         val vy = combined.m10 * wx + combined.m11 * wy + combined.m12 * wz + combined.m13
         val vz = combined.m20 * wx + combined.m21 * wy + combined.m22 * wz + combined.m23
         val vw = 0.5F / (combined.m30 * wx + combined.m31 * wy + combined.m32 * wz + combined.m33)
         val x = 0.5F + vx * vw
         val y = 0.5F - vy * vw
-        if (x !in 0.0F..1.0F || y !in 0.0F..1.0F) return 0.0F
-        val z = 0.5F + vz * vw
-        val sx = clamp((resolution * x).toInt(), 1, resolution - 2)
-        val sy = clamp((resolution * y).toInt(), 1, resolution - 2)
-        val mem1 = sy * resolution + sx - 1
-        val mem0 = mem1 - resolution
-        val mem2 = mem1 + resolution
-        var acc = 0.0F
-        for (t in 0..2) {
-            if (z < device.depthBuffer[mem0 + t]) acc += 0.11111F
-            if (z < device.depthBuffer[mem1 + t]) acc += 0.11111F
-            if (z < device.depthBuffer[mem2 + t]) acc += 0.11111F
-        }
-        return acc
-    }
+        if (x in 0.0F..1.0F && y in 0.0F..1.0F) {
+            val z = 0.5F + vz * vw
+            val sx = clamp((resolution * x).toInt(), 1, resolution - 2)
+            val sy = clamp((resolution * y).toInt(), 1, resolution - 2)
+            val mem1 = sy * resolution + sx - 1
+            val mem0 = mem1 - resolution
+            val mem2 = mem1 + resolution
+            (if (z < device.depthBuffer[mem0 + 0]) 0.11111111F else 0.0F) +
+            (if (z < device.depthBuffer[mem1 + 0]) 0.11111111F else 0.0F) +
+            (if (z < device.depthBuffer[mem2 + 0]) 0.11111111F else 0.0F) +
+            (if (z < device.depthBuffer[mem0 + 1]) 0.11111111F else 0.0F) +
+            (if (z < device.depthBuffer[mem1 + 1]) 0.11111111F else 0.0F) +
+            (if (z < device.depthBuffer[mem2 + 1]) 0.11111111F else 0.0F) +
+            (if (z < device.depthBuffer[mem0 + 2]) 0.11111111F else 0.0F) +
+            (if (z < device.depthBuffer[mem1 + 2]) 0.11111111F else 0.0F) +
+            (if (z < device.depthBuffer[mem2 + 2]) 0.11111111F else 0.0F)
+        } else 0.0F
+    } else 1.0F
 }

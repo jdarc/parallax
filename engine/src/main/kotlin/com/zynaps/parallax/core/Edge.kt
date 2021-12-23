@@ -20,7 +20,6 @@ package com.zynaps.parallax.core
 
 import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.max
-import java.lang.Math.fma
 
 internal class Edge {
     var y1 = 0
@@ -52,24 +51,24 @@ internal class Edge {
         if (height > 0) {
             val yPreStep = y1 - a.vy
             xStep = (b.vx - a.vx) / (b.vy - a.vy)
-            x = fma(yPreStep, xStep, a.vx)
+            x = yPreStep * xStep + a.vx
 
             val xPreStep = x - a.vx
-            z = fma(yPreStep, g._zOverZdY, fma(xPreStep, g._zOverZdX, a.vz))
-            _1OverZ = fma(yPreStep, g._1OverZdY, fma(xPreStep, g._1OverZdX, a.vw))
-            nxOverZ = fma(yPreStep, g.nxOverZdY, fma(xPreStep, g.nxOverZdX, a.nx))
-            nyOverZ = fma(yPreStep, g.nyOverZdY, fma(xPreStep, g.nyOverZdX, a.ny))
-            nzOverZ = fma(yPreStep, g.nzOverZdY, fma(xPreStep, g.nzOverZdX, a.nz))
-            tuOverZ = fma(yPreStep, g.tuOverZdY, fma(xPreStep, g.tuOverZdX, a.tu))
-            tvOverZ = fma(yPreStep, g.tvOverZdY, fma(xPreStep, g.tvOverZdX, a.tv))
+            z = yPreStep * g._zOverZdY + (xPreStep * g._zOverZdX + a.vz)
+            _1OverZ = yPreStep * g._1OverZdY + xPreStep * g._1OverZdX + a.vw
+            nxOverZ = yPreStep * g.nxOverZdY + xPreStep * g.nxOverZdX + a.nx
+            nyOverZ = yPreStep * g.nyOverZdY + xPreStep * g.nyOverZdX + a.ny
+            nzOverZ = yPreStep * g.nzOverZdY + xPreStep * g.nzOverZdX + a.nz
+            tuOverZ = yPreStep * g.tuOverZdY + xPreStep * g.tuOverZdX + a.tu
+            tvOverZ = yPreStep * g.tvOverZdY + xPreStep * g.tvOverZdX + a.tv
 
-            zStep = fma(xStep, g._zOverZdX, g._zOverZdY)
-            _1OverZStep = fma(xStep, g._1OverZdX, g._1OverZdY)
-            nxOverZStep = fma(xStep, g.nxOverZdX, g.nxOverZdY)
-            nyOverZStep = fma(xStep, g.nyOverZdX, g.nyOverZdY)
-            nzOverZStep = fma(xStep, g.nzOverZdX, g.nzOverZdY)
-            tuOverZStep = fma(xStep, g.tuOverZdX, g.tuOverZdY)
-            tvOverZStep = fma(xStep, g.tvOverZdX, g.tvOverZdY)
+            zStep = xStep * g._zOverZdX + g._zOverZdY
+            _1OverZStep = xStep * g._1OverZdX + g._1OverZdY
+            nxOverZStep = xStep * g.nxOverZdX + g.nxOverZdY
+            nyOverZStep = xStep * g.nyOverZdX + g.nyOverZdY
+            nzOverZStep = xStep * g.nzOverZdX + g.nzOverZdY
+            tuOverZStep = xStep * g.tuOverZdX + g.tuOverZdY
+            tvOverZStep = xStep * g.tvOverZdX + g.tvOverZdY
         }
 
         return height

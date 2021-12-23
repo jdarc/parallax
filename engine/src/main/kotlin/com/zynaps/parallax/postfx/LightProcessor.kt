@@ -23,29 +23,34 @@ import com.zynaps.parallax.core.Color
 import com.zynaps.parallax.core.Device
 import com.zynaps.parallax.core.Light
 import com.zynaps.parallax.math.Scalar
-import com.zynaps.parallax.system.Parallel
-import java.lang.Math.fma
+import com.zynaps.parallax.system.Parallel.F
+import java.util.concurrent.Callable
 
 class LightProcessor(val device: Device) : PostProcessor {
+
+    private val tasks = genTasks()
 
     var lights = ArrayList<Light>(0)
     var camera: Camera = Camera.Perspective()
     var ambientRGB = 0x000000
 
     override fun apply() {
-        val ambientRed = Color.red(ambientRGB)
-        val ambientGrn = Color.grn(ambientRGB)
-        val ambientBlu = Color.blu(ambientRGB)
-        val screenToWorld = camera.transform.invert
-        val twoOverWidth = 2.0F / device.width
-        val twoOverHeight = 2.0F / device.height
-        val lightsArray = lights.toTypedArray()
-        Parallel.execute(device.height) { y ->
-            val offset = y * device.width
-            val vy = fma(-y.toFloat(), twoOverHeight, 1.0F)
+        F.invokeAll(tasks)
+    }
+
+    private fun genTasks() = (0 until device.height).map {
+        Callable {
+            val lightsArray = lights.toTypedArray()
+            val ambientRed = Color.red(ambientRGB)
+            val ambientGrn = Color.grn(ambientRGB)
+            val ambientBlu = Color.blu(ambientRGB)
+            val screenToWorld = camera.transform.invert
+            val twoOverWidth = 2.0F / device.width
+            val twoOverHeight = 2.0F / device.height
+            val offset = it * device.width
+            val vy = -it.toFloat() * twoOverHeight + 1.0F
             var vx = -1.0F
-            for (x in 0 until device.width) {
-                val mem = offset + x
+            for (mem in offset until offset + device.width) {
                 val z = device.depthBuffer[mem]
                 if (z < 1.0F) {
                     val diff = device.colorBuffer[mem]
@@ -68,11 +73,11 @@ class LightProcessor(val device: Device) : PostProcessor {
                     ny *= nl
                     nz *= nl
 
-                    val vz = fma(z, 2.0F, -1.0F)
-                    val vw = 1.0F / fma(vx, screenToWorld.m30, fma(vy, screenToWorld.m31, fma(vz, screenToWorld.m32, screenToWorld.m33)))
-                    val wx = vw * fma(vx, screenToWorld.m00, fma(vy, screenToWorld.m01, fma(vz, screenToWorld.m02, screenToWorld.m03)))
-                    val wy = vw * fma(vx, screenToWorld.m10, fma(vy, screenToWorld.m11, fma(vz, screenToWorld.m12, screenToWorld.m13)))
-                    val wz = vw * fma(vx, screenToWorld.m20, fma(vy, screenToWorld.m21, fma(vz, screenToWorld.m22, screenToWorld.m23)))
+                    val vz = z * 2.0F - 1.0F
+                    val vw = 1.0F / (vx * screenToWorld.m30 + vy * screenToWorld.m31 + vz * screenToWorld.m32 + screenToWorld.m33)
+                    val wx = (vx * screenToWorld.m00 + vy * screenToWorld.m01 + vz * screenToWorld.m02 + screenToWorld.m03) * vw
+                    val wy = (vx * screenToWorld.m10 + vy * screenToWorld.m11 + vz * screenToWorld.m12 + screenToWorld.m13) * vw
+                    val wz = (vx * screenToWorld.m20 + vy * screenToWorld.m21 + vz * screenToWorld.m22 + screenToWorld.m23) * vw
 
                     var sumRed = 0
                     var sumGrn = 0
@@ -80,7 +85,8 @@ class LightProcessor(val device: Device) : PostProcessor {
                     var specRed = 0
                     var specGrn = 0
                     var specBlu = 0
-                    for (light in lightsArray) {
+                    for (l in lightsArray.indices) {
+                        val light = lightsArray[l]
                         val result = (light.trace(nx, ny, nz, wx, wy, wz) * 256.0F).toInt()
                         sumRed += light.red * kdr * result shr 16
                         sumGrn += light.grn * kdg * result shr 16

@@ -21,48 +21,31 @@ package com.zynaps.parallax.system
 import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.min
 import java.util.concurrent.Callable
-import java.util.concurrent.ForkJoinPool
+import java.util.concurrent.Executors
 
 object Parallel {
 
     val CPUS = Runtime.getRuntime().availableProcessors()
+    val F = Executors.newWorkStealingPool(CPUS * 2)
 
     fun invoke(vararg callbacks: () -> Unit) {
-        when {
-            callbacks.isEmpty() -> return
-            else -> ForkJoinPool.commonPool().invokeAll(callbacks.map {
-                Callable {
-                    it()
-                    null
-                }
-            })
+        if (callbacks.isNotEmpty()) {
+            F.invokeAll(callbacks.map { Callable { it() } })
         }
     }
 
     fun execute(total: Int, callback: (next: Int) -> Unit) {
-        when {
-            total <= 0 -> return
-            else -> ForkJoinPool.commonPool().invokeAll((0 until total).map {
-                Callable {
-                    callback(it)
-                    null
-                }
-            })
+        if (total > 0) {
+            F.invokeAll((0 until total).map { Callable { callback(it) } })
         }
     }
 
     fun partition(total: Int, callback: (index: Int, from: Int, to: Int) -> Unit) {
-        when {
-            total <= 0 -> return
-            else -> {
-                val size = ceil(total.toFloat() / CPUS)
-                ForkJoinPool.commonPool().invokeAll((0 until total step size).map {
-                    Callable {
-                        callback(it / size, it, it + min(size, total - it))
-                        null
-                    }
-                })
-            }
+        if (total > 0) {
+            val size = ceil(total.toFloat() / CPUS)
+            F.invokeAll((0 until total step size).map {
+                Callable { callback(it / size, it, it + min(size, total - it)) }
+            })
         }
     }
 }

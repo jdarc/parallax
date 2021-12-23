@@ -21,59 +21,57 @@ package com.zynaps.parallax.core
 import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.max
 import com.zynaps.parallax.math.Scalar.min
-import com.zynaps.parallax.system.Parallel
-import java.lang.Math.fma
+import com.zynaps.parallax.system.Parallel.F
+import java.util.concurrent.Callable
 
 internal class ColorRasterizer : Rasterizer {
 
+    private var tasks = listOf<Callable<Unit>>()
+
     override fun clear(device: Device, color: Int, depth: Float) {
-        for (i in 0 until device.colorBuffer.size) device.colorBuffer[i] = color
-        for (i in 0 until device.emissiveBuffer.size) device.emissiveBuffer[i] = 0x000000
+        device.colorBuffer.fill(color)
+        device.emissiveBuffer.fill(0x000000)
     }
 
     override fun render(device: Device) {
-        Parallel.execute(device.height) { y ->
-            val offset = y * device.width
-            val depthBuffer = device.depthBuffer
-            val colrArray = device.colorBuffer
-            val normArray = device.normalBuffer
-            val specArray = device.specularBuffer
-            val emitArray = device.emissiveBuffer
+        if (tasks.size != device.height) tasks = genTasks(device)
+        F.invokeAll(tasks)
+    }
+
+    private fun genTasks(device: Device) = (0 until device.height).map {
+        Callable {
+            val offset = it * device.width
             for (buffer in device.spanBuffers) {
-                val spanBuffer = buffer[y]
-                if (spanBuffer.size == 0) continue
-                val yy = y.toFloat()
+                val spanBuffer = buffer[it]
+                if (spanBuffer.isEmpty()) continue
                 for (i in 0 until spanBuffer.size) {
                     val fragment = spanBuffer[i]
                     val diff = fragment.material.diffuse
                     val spec = fragment.material.specular
                     val emit = fragment.material.emissive
                     val glos = fragment.material.glossiness shl 24
-                    val delta = yy - fragment.leftY
+                    val delta = it.toFloat() - fragment.leftY
                     val lx = fragment.getLeftX(delta)
                     val x1 = max(0, ceil(lx))
-                    val x2 = min(device.width, ceil(fragment.getRightX(yy - fragment.rightY)))
+                    val x2 = min(device.width, ceil(fragment.getRightX(it.toFloat() - fragment.rightY)))
                     val preStep = x1 - lx
-                    var z1 = fma(fragment._zOverZdX, preStep, fragment.getZ(delta))
-                    var _1OverZ = fma(fragment._1OverZdX, preStep, fragment.get1OverZ(delta))
-                    var nxOverZ = fma(fragment.nxOverZdX, preStep, fragment.getNxOverZ(delta))
-                    var nyOverZ = fma(fragment.nyOverZdX, preStep, fragment.getNyOverZ(delta))
-                    var nzOverZ = fma(fragment.nzOverZdX, preStep, fragment.getNzOverZ(delta))
-                    var tuOverZ = fma(fragment.tuOverZdX, preStep, fragment.getTuOverZ(delta))
-                    var tvOverZ = fma(fragment.tvOverZdX, preStep, fragment.getTvOverZ(delta))
+                    var z1 = fragment._zOverZdX * preStep + fragment.getZ(delta)
+                    var _1OverZ = fragment._1OverZdX * preStep + fragment.get1OverZ(delta)
+                    var nxOverZ = fragment.nxOverZdX * preStep + fragment.getNxOverZ(delta)
+                    var nyOverZ = fragment.nyOverZdX * preStep + fragment.getNyOverZ(delta)
+                    var nzOverZ = fragment.nzOverZdX * preStep + fragment.getNzOverZ(delta)
+                    var tuOverZ = fragment.tuOverZdX * preStep + fragment.getTuOverZ(delta)
+                    var tvOverZ = fragment.tvOverZdX * preStep + fragment.getTvOverZ(delta)
                     for (x in offset + x1 until offset + x2) {
-                        if (z1 <= depthBuffer[x]) {
+                        if (z1 <= device.depthBuffer[x]) {
                             val oz = 1F / _1OverZ
                             val nz = 511F * oz
                             val tu = tuOverZ * oz
                             val tv = tvOverZ * oz
-                            colrArray[x] = diff.sample(tu, tv)
-                            specArray[x] = spec.sample(tu, tv) or glos
-                            emitArray[x] = emit.sample(tu, tv)
-                            val nr = fma(nxOverZ, nz, 512F).toInt()
-                            val ng = fma(nyOverZ, nz, 512F).toInt()
-                            val nb = fma(nzOverZ, nz, 512F).toInt()
-                            normArray[x] = nr.shl(20) or ng.shl(10) or nb
+                            device.colorBuffer[x] = diff.sample(tu, tv)
+                            device.specularBuffer[x] = spec.sample(tu, tv) or glos
+                            device.emissiveBuffer[x] = emit.sample(tu, tv)
+                            device.normalBuffer[x] = packNormals(nxOverZ * nz, nyOverZ * nz, nzOverZ * nz)
                         }
                         z1 += fragment._zOverZdX
                         _1OverZ += fragment._1OverZdX
@@ -86,5 +84,12 @@ internal class ColorRasterizer : Rasterizer {
                 }
             }
         }
+    }
+
+    private fun packNormals(x: Float, y: Float, z: Float): Int {
+        val r = (x + 512F).toInt()
+        val g = (y + 512F).toInt()
+        val b = (z + 512F).toInt()
+        return r.shl(20) or g.shl(10) or b
     }
 }

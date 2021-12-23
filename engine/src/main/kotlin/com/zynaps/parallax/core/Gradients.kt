@@ -18,8 +18,6 @@
  */
 package com.zynaps.parallax.core
 
-import java.lang.Math.fma
-
 internal class Gradients {
 
     var _1OverZdX = 0.0F
@@ -46,37 +44,37 @@ internal class Gradients {
 
         val w0 = a.vw - c.vw
         val w1 = b.vw - c.vw
-        _1OverZdX = oneOverDX * fma(w1, acy, -w0 * bcy)
-        _1OverZdY = oneOverDX * fma(w0, bcx, -w1 * acx)
+        _1OverZdX = oneOverDX * (w1 * acy - w0 * bcy)
+        _1OverZdY = oneOverDX * (w0 * bcx - w1 * acx)
 
         val z0 = a.vz - c.vz
         val z1 = b.vz - c.vz
-        _zOverZdX = oneOverDX * fma(z1, acy, -z0 * bcy)
-        _zOverZdY = oneOverDX * fma(z0, bcx, -z1 * acx)
+        _zOverZdX = oneOverDX * (z1 * acy - z0 * bcy)
+        _zOverZdY = oneOverDX * (z0 * bcx - z1 * acx)
 
         val nx0 = a.nx - c.nx
         val nx1 = b.nx - c.nx
-        nxOverZdX = oneOverDX * fma(nx1, acy, -nx0 * bcy)
-        nxOverZdY = oneOverDX * fma(nx0, bcx, -nx1 * acx)
+        nxOverZdX = oneOverDX * (nx1 * acy - nx0 * bcy)
+        nxOverZdY = oneOverDX * (nx0 * bcx - nx1 * acx)
 
         val ny0 = a.ny - c.ny
         val ny1 = b.ny - c.ny
-        nyOverZdX = oneOverDX * fma(ny1, acy, -ny0 * bcy)
-        nyOverZdY = oneOverDX * fma(ny0, bcx, -ny1 * acx)
+        nyOverZdX = oneOverDX * (ny1 * acy - ny0 * bcy)
+        nyOverZdY = oneOverDX * (ny0 * bcx - ny1 * acx)
 
         val nz0 = a.nz - c.nz
         val nz1 = b.nz - c.nz
-        nzOverZdX = oneOverDX * fma(nz1, acy, -nz0 * bcy)
-        nzOverZdY = oneOverDX * fma(nz0, bcx, -nz1 * acx)
+        nzOverZdX = oneOverDX * (nz1 * acy - nz0 * bcy)
+        nzOverZdY = oneOverDX * (nz0 * bcx - nz1 * acx)
 
         val tu0 = a.tu - c.tu
         val tu1 = b.tu - c.tu
-        tuOverZdX = oneOverDX * fma(tu1, acy, -tu0 * bcy)
-        tuOverZdY = oneOverDX * fma(tu0, bcx, -tu1 * acx)
+        tuOverZdX = oneOverDX * (tu1 * acy - tu0 * bcy)
+        tuOverZdY = oneOverDX * (tu0 * bcx - tu1 * acx)
 
         val tv0 = a.tv - c.tv
         val tv1 = b.tv - c.tv
-        tvOverZdX = oneOverDX * fma(tv1, acy, -tv0 * bcy)
-        tvOverZdY = oneOverDX * fma(tv0, bcx, -tv1 * acx)
+        tvOverZdX = oneOverDX * (tv1 * acy - tv0 * bcy)
+        tvOverZdY = oneOverDX * (tv0 * bcx - tv1 * acx)
     }
 }

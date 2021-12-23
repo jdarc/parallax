@@ -21,28 +21,32 @@ package com.zynaps.parallax.core
 import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.max
 import com.zynaps.parallax.math.Scalar.min
-import com.zynaps.parallax.system.Parallel
-import java.lang.Math.fma
+import com.zynaps.parallax.system.Parallel.F
+import java.util.concurrent.Callable
 
 internal class DepthRasterizer : Rasterizer {
 
-    override fun clear(device: Device, color: Int, depth: Float) {
-        for (i in device.depthBuffer.indices) device.depthBuffer[i] = depth
-    }
+    private var tasks = listOf<Callable<Unit>>()
+
+    override fun clear(device: Device, color: Int, depth: Float) = device.depthBuffer.fill(depth)
 
     override fun render(device: Device) {
-        Parallel.execute(device.height) { y ->
+        if (tasks.size != device.height) tasks = genTasks(device)
+        F.invokeAll(tasks)
+    }
+
+    private fun genTasks(device: Device) = (0 until device.height).map {
+        Callable {
+            val offset = it * device.width
             for (buffer in device.spanBuffers) {
-                val spanBuffer = buffer[y]
+                val spanBuffer = buffer[it]
                 if (spanBuffer.isEmpty()) continue
-                val offset = y * device.width
-                val yy = y.toFloat()
                 for (i in 0 until spanBuffer.size) {
                     val fragment = spanBuffer[i]
-                    val lx = fragment.getLeftX(yy - fragment.leftY)
+                    val lx = fragment.getLeftX(it.toFloat() - fragment.leftY)
                     val x1 = max(0, ceil(lx))
-                    val x2 = min(device.width, ceil(fragment.getRightX(yy - fragment.rightY)))
-                    var sz = fma(fragment._zOverZdX, (x1 - lx), fragment.getZ(yy - fragment.leftY))
+                    val x2 = min(device.width, ceil(fragment.getRightX(it.toFloat() - fragment.rightY)))
+                    var sz = fragment._zOverZdX * (x1 - lx) + fragment.getZ(it.toFloat() - fragment.leftY)
                     for (x in offset + x1 until offset + x2) {
                         if (sz < device.depthBuffer[x]) device.depthBuffer[x] = sz
                         sz += fragment._zOverZdX

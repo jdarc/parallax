@@ -22,25 +22,26 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 
 object Scalar {
-    const val PI = 3.14159265359F
-    const val TAU = 6.28318530718F
-    const val HALF_PI = 1.57079632679F
+    const val PI = 3.1415927F
+    const val TAU = 6.2831855F
+    const val HALF_PI = 1.5707964F
     const val EPSILON = 0.00000001F
-    const val LARGE = 1073741823.0
+
+    private const val LARGE = 1073741823.0
 
     fun equals(a: Float, b: Float, epsilon: Float = EPSILON) = !(a - b).isNaN() && abs(a - b) <= epsilon
 
-    fun min(a: Int, b: Int) = if (a < b) a else b
+    fun min(a: Int, b: Int) = kotlin.math.min(a, b)
 
-    fun min(a: Float, b: Float) = if (a < b) a else b
+    fun min(a: Float, b: Float) = kotlin.math.min(a, b)
 
-    fun max(a: Int, b: Int) = if (a > b) a else b
+    fun max(a: Int, b: Int) = kotlin.math.max(a, b)
 
-    fun max(a: Float, b: Float) = if (a > b) a else b
+    fun max(a: Float, b: Float) = kotlin.math.max(a, b)
 
-    fun clamp(value: Int, min: Int, max: Int) = value.coerceIn(min, max)
+    fun clamp(value: Int, min: Int, max: Int) = max(min, min(max, value))
 
-    fun clamp(value: Float, min: Float, max: Float) = value.coerceIn(min, max)
+    fun clamp(value: Float, min: Float, max: Float) = max(min, min(max, value))
 
     fun ceil(a: Float) = 0x3FFFFFFF - (LARGE - a).toInt()
 

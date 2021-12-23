@@ -27,9 +27,7 @@ class RenderBuffer private constructor(val data: IntArray, val width: Int) {
         data[index] = value
     }
 
-    fun fill(value: Int) {
-        for (i in data.indices) data[i] = value
-    }
+    fun fill(value: Int) = data.fill(value)
 
     fun copyInto(dst: IntArray, offset: Int = 0, start: Int = 0, end: Int = data.size) {
         data.copyInto(dst, offset, start, end)

@@ -41,6 +41,7 @@ class Visualizer(val width: Int, val height: Int) {
     private var glowProcessor = GlowProcessor()
 
     private val blurFilter = BlurFilter(device.colorBuffer)
+    private val gammaFilter = GammaFilter(device.colorBuffer)
 
     fun render(sceneGraph: SceneGraph, camera: Camera) = render(camera, sceneGraph)
 
@@ -58,14 +59,14 @@ class Visualizer(val width: Int, val height: Int) {
         lightProcessor.ambientRGB = ambientColor
         lightProcessor.apply()
 
-        glowProcessor.source = device.emissiveBuffer
-        glowProcessor.destination = device.colorBuffer
-        glowProcessor.apply()
+//        glowProcessor.source = device.emissiveBuffer
+//        glowProcessor.destination = device.colorBuffer
+//        glowProcessor.apply()
 
 //        blurFilter.radius = 2
 //        blurFilter.steps = 1
 //        blurFilter.apply()
 
-        GammaFilter(device.colorBuffer).apply()
+        gammaFilter.apply()
     }
 }

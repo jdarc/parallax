@@ -58,7 +58,7 @@ class Viewer : Canvas() {
         visualizer = Visualizer((width * fsaa).toInt(), (height * fsaa).toInt())
         visualizer.backgroundColor = background.rgb
         visualizer.lights.add(Light().shadowMapResolution(1024).moveTo(-1800.0F, 2500.0F, 1000.0F))
-        visualizer.lights.add(Light().shadowMapResolution(1024).moveTo( 1800.0F, 2500.0F, 1000.0F))
+        visualizer.lights.add(Light().shadowMapResolution(1024).moveTo(+1800.0F, 2500.0F, 1000.0F))
         visualizer.lights[0].castShadows = true
         visualizer.lights[1].color = 0x8833f0
         visualizer.lights[1].castShadows = true
@@ -68,16 +68,6 @@ class Viewer : Canvas() {
         controller = FPSController(camera)
 
         sceneGraph = createScene()
-
-//        orthoShader = object : Shader {
-//            var alpha = 0xFF
-//            override fun execute(buffers: Array<RenderBuffer>, samplers: Array<Sampler>, parameters: Parameters) {
-//                val rgb1 = samplers[0].sample(parameters.tu, parameters.tv)
-//                val rgb2 = buffers[0][parameters.offset]
-//                buffers[0][parameters.offset] = com.zynaps.parallax.core.Color.blend(rgb1, rgb2, alpha)
-//            }
-//        }
-//        sceneGraph.root.add(generateOrthoNode())
     }
 
     fun update(seconds: Double) {
@@ -98,8 +88,6 @@ class Viewer : Canvas() {
 
         val g = bufferStrategy.drawGraphics as Graphics2D
         visualizer.present(g, 0, 0, width, height)
-
-//        renderOrthographic()
 
         renderStats(g)
         g.dispose()
@@ -168,99 +156,6 @@ class Viewer : Canvas() {
                 }
             }
     }
-
-
-//    private val orthoRasterize = Device(320, 200)
-//    private val orthoColorBuffer = RenderBuffer.create(320, 200)
-//    private val orthoDepthBuffer = RenderBuffer.create(320, 200)
-//    private val orthoRaster = Bitmap(320, 200)
-//    private val orthoCamera = Camera.Orthographic(orthoRasterize.width.toFloat(), orthoRasterize.height.toFloat(), 1.0F, 10000.0F)
-//    private val orthoShader: Shader
-
-//    private fun generateOrthoNode(): Node {
-//        BranchNode().add(object : BranchNode() {
-//            var render = false
-//            var model: Model? = null
-//
-//            override fun updateProperties(properties: Map<String, Any>?) {
-//                render = (properties?.getOrDefault("ortho", false) ?: false) as Boolean
-//            }
-//
-//            override val localBounds get() = model?.bounds ?: Aabb()
-//
-//            override fun render(device: Device) {
-//                if (render) {
-//                    orthoShader.alpha = 127
-//                    model = generateFrustumModel(camera)
-//                    model!!.materials.forEach { material ->
-//                        model!![material]?.forEach { mesh ->
-//                            device.bindSampler(0, material.diffuse)
-//                            mesh.draw(device)
-//                        }
-//                    }
-//                    orthoShader.alpha = 255
-//                }
-//            }
-//        })
-//        return BranchNode()
-//    }
-
-//    private fun renderOrthographic() {
-//        orthoCamera.moveTo(0.0F, 1000.0F, 0.0F)
-//        orthoCamera.lookAt(0.0F, 0.0F, 0.0F)
-//        orthoCamera.worldUp(0.0F, 0.0F, -1.0F)
-//
-//        orthoCamera.moveTo(1000.0F, 0.0F, 0.0F)
-//        orthoCamera.lookAt(0.0F, 0.0F, 0.0F)
-//        orthoCamera.worldUp(0.0F, 1.0F, 0.0F)
-//
-//        val frustum = Frustum(orthoCamera.view, orthoCamera.projection)
-//
-//        orthoRasterize.shader = orthoShader
-//        orthoColorBuffer.fill(0x54445b shr 1 and 0x7f7f7f)
-//        orthoRasterize.bindBuffer(0, orthoColorBuffer)
-//        orthoRasterize.bindBuffer(7, orthoDepthBuffer)
-//        sceneGraph.render(frustum, orthoRasterize, mapOf("ortho" to true))
-//
-//        Graphics.blit(orthoColorBuffer, orthoRaster)
-//
-//        val graphics = bitmap.image.graphics
-//        graphics.color = Color.BLACK
-//        graphics.drawImage(orthoRaster.image, 0, bitmap.height - 200, null)
-//        graphics.drawRect(0, bitmap.height - orthoRasterize.height, orthoRasterize.width - 1, orthoRasterize.height - 1)
-//        graphics.dispose()
-//    }
-
-//    private fun generateFrustumModel(camera: Camera): Model {
-//        val blue = Material.Builder().diffuse(0x0000FF).build()
-//        val red = Material.Builder().diffuse(0xFF0000).build()
-//        val green = Material.Builder().diffuse(0xFF00FF).build()
-//
-//        val frustum = Frustum(camera.view, camera.projection)
-//        val volume = Frustum.computeVolume(frustum)
-//        val assembler = Assembler()
-//        assembler.vertex(volume[0])
-//        assembler.vertex(volume[1])
-//        assembler.vertex(volume[2])
-//        assembler.vertex(volume[3])
-//        assembler.vertex(volume[4])
-//        assembler.vertex(volume[5])
-//        assembler.vertex(volume[6])
-//        assembler.vertex(volume[7])
-//        assembler.triangle(0, 1, 2).withMaterial(blue)
-//        assembler.triangle(2, 3, 0).withMaterial(blue)
-//        assembler.triangle(4, 5, 6).withMaterial(blue)
-//        assembler.triangle(6, 7, 4).withMaterial(blue)
-//        assembler.triangle(1, 0, 5).withMaterial(red)
-//        assembler.triangle(5, 4, 1).withMaterial(red)
-//        assembler.triangle(7, 6, 3).withMaterial(red)
-//        assembler.triangle(3, 2, 7).withMaterial(red)
-//        assembler.triangle(3, 6, 5).withMaterial(green)
-//        assembler.triangle(5, 0, 3).withMaterial(green)
-//        assembler.triangle(2, 1, 4).withMaterial(green)
-//        assembler.triangle(4, 7, 2).withMaterial(green)
-//        return assembler.compile()
-//    }
 
     fun handleEvent(event: AWTEvent) = controller.handleEvent(event)
 }

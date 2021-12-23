@@ -18,8 +18,6 @@
  */
 package com.zynaps.parallax.core
 
-import java.lang.Math.fma
-
 internal class Fragment {
     var leftX = 0F
     private var rightX = 0F
@@ -96,13 +94,13 @@ internal class Fragment {
         return this
     }
 
-    fun getLeftX(delta: Float) = fma(leftXStep, delta, leftX)
-    fun getRightX(delta: Float) = fma(rightXStep, delta, rightX)
-    fun getZ(delta: Float) = fma(leftZStep, delta, leftZ)
-    fun get1OverZ(delta: Float) = fma(_1OverZStep, delta, _1OverZ)
-    fun getNxOverZ(delta: Float) = fma(nxOverZStep, delta, nxOverZ)
-    fun getNyOverZ(delta: Float) = fma(nyOverZStep, delta, nyOverZ)
-    fun getNzOverZ(delta: Float) = fma(nzOverZStep, delta, nzOverZ)
-    fun getTuOverZ(delta: Float) = fma(tuOverZStep, delta, tuOverZ)
-    fun getTvOverZ(delta: Float) = fma(tvOverZStep, delta, tvOverZ)
+    fun getLeftX(delta: Float) = leftXStep * delta + leftX
+    fun getRightX(delta: Float) = rightXStep * delta + rightX
+    fun getZ(delta: Float) = leftZStep * delta + leftZ
+    fun get1OverZ(delta: Float) = _1OverZStep * delta + _1OverZ
+    fun getNxOverZ(delta: Float) = nxOverZStep * delta + nxOverZ
+    fun getNyOverZ(delta: Float) = nyOverZStep * delta + nyOverZ
+    fun getNzOverZ(delta: Float) = nzOverZStep * delta + nzOverZ
+    fun getTuOverZ(delta: Float) = tuOverZStep * delta + tuOverZ
+    fun getTvOverZ(delta: Float) = tvOverZStep * delta + tvOverZ
 }
