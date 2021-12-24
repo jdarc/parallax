@@ -35,20 +35,20 @@ internal class DepthRasterizer : Rasterizer {
         F.invokeAll(tasks)
     }
 
-    private fun genTasks(device: Device) = (0 until device.height).map {
+    private fun genTasks(device: Device) = (0 until device.height).map { y ->
         Callable {
-            val offset = it * device.width
-            for (buffer in device.spanBuffers) {
-                val spanBuffer = buffer[it]
-                if (spanBuffer.isEmpty()) continue
+            val yy = y.toFloat()
+            val offset = y * device.width
+            device.spanBuffers.forEach {
+                val spanBuffer = it[y]
                 for (i in 0 until spanBuffer.size) {
                     val fragment = spanBuffer[i]
-                    val lx = fragment.getLeftX(it.toFloat() - fragment.leftY)
+                    val lx = fragment.getLeftX(yy - fragment.leftY)
                     val x1 = max(0, ceil(lx))
-                    val x2 = min(device.width, ceil(fragment.getRightX(it.toFloat() - fragment.rightY)))
-                    var sz = fragment._zOverZdX * (x1 - lx) + fragment.getZ(it.toFloat() - fragment.leftY)
+                    val x2 = min(device.width, ceil(fragment.getRightX(yy - fragment.rightY)))
+                    var sz = fragment._zOverZdX * (x1 - lx) + fragment.getZ(yy - fragment.leftY)
                     for (x in offset + x1 until offset + x2) {
-                        if (sz < device.depthBuffer[x]) device.depthBuffer[x] = sz
+                        device.depthBuffer[x] = min(sz, device.depthBuffer[x])
                         sz += fragment._zOverZdX
                     }
                 }

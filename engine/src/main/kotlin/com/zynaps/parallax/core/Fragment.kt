@@ -54,8 +54,6 @@ internal class Fragment {
 
     var material = Material.DEFAULT
 
-    var next: Fragment? = null
-
     fun configure(m: Material, g: Gradients, l: Edge, r: Edge): Fragment {
         rightY = r.y1
         rightX = r.x

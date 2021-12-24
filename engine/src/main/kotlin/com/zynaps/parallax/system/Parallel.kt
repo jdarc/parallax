@@ -21,12 +21,13 @@ package com.zynaps.parallax.system
 import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.min
 import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 object Parallel {
 
     val CPUS = Runtime.getRuntime().availableProcessors()
-    val F = Executors.newWorkStealingPool(CPUS * 2)
+    val F: ExecutorService = Executors.newWorkStealingPool(CPUS + CPUS / 2)
 
     fun invoke(vararg callbacks: () -> Unit) {
         if (callbacks.isNotEmpty()) {
