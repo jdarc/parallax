@@ -32,12 +32,16 @@ internal class SpanBuffer(val width: Int, val height: Int) {
 
     fun add(material: Material, gradients: Gradients, left: Edge, right: Edge, leader: Edge) {
         val fragment = pool.next().configure(material, gradients, left, right)
+        var lx = fragment.getLeftX(leader.y1.toFloat() - fragment.leftY)
+        var rx = fragment.getRightX(leader.y1.toFloat() - fragment.rightY)
         for (y in leader.y1 until min(height, leader.y2)) {
-            val x1 = max(0, ceil(fragment.getLeftX(y.toFloat() - fragment.leftY)))
+            val x1 = max(0, ceil(lx))
             if (x1 < width) {
-                val x2 = min(width, ceil(fragment.getRightX(y.toFloat() - fragment.rightY)))
+                val x2 = min(width, ceil(rx))
                 if (x2 > x1) spans[y].add(fragment)
             }
+            lx += fragment.leftXStep
+            rx += fragment.rightXStep
         }
     }
 

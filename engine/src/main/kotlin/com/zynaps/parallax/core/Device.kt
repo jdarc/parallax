@@ -68,7 +68,15 @@ class Device(val bitmap: Bitmap) {
         Parallel.partition(count) { index, from, to -> drawChunk(index, from, to, indexBuffer, vertexBuffer, transform, normal) }
     }
 
-    private fun drawChunk(index: Int, from: Int, to: Int, indexBuffer: IntArray, vertexBuffer: FloatArray, w: Matrix4, n: Matrix4) {
+    private fun drawChunk(
+        index: Int,
+        from: Int,
+        to: Int,
+        indexBuffer: IntArray,
+        vertexBuffer: FloatArray,
+        w: Matrix4,
+        n: Matrix4
+    ) {
         val p0 = Vertex()
         val p1 = Vertex()
         val p2 = Vertex()
@@ -150,32 +158,37 @@ class Device(val bitmap: Bitmap) {
     private fun edgeSort(stack: SpanBuffer, g: Gradients, e0: Edge, e1: Edge, e2: Edge, a: Vertex, b: Vertex, c: Vertex) {
         if (max(a.vx, max(b.vx, c.vx)) < 0.0F || min(a.vx, min(b.vx, c.vx)) >= width) return
         if (a.vy < b.vy) when {
-            c.vy < a.vy -> triangle(stack, g, e0, e1, e2, c, a, b, true)
-            b.vy < c.vy -> triangle(stack, g, e0, e1, e2, a, b, c, true)
-            else -> triangle(stack, g, e0, e1, e2, a, c, b, false)
+            c.vy < a.vy -> triangle(stack, g, e0, e1, e2, c, a, b, e1, e0, e2, e0)
+            b.vy < c.vy -> triangle(stack, g, e0, e1, e2, a, b, c, e1, e0, e2, e0)
+            else -> triangle(stack, g, e0, e1, e2, a, c, b, e0, e1, e0, e2)
         } else when {
-            c.vy < b.vy -> triangle(stack, g, e0, e1, e2, c, b, a, false)
-            a.vy < c.vy -> triangle(stack, g, e0, e1, e2, b, a, c, false)
-            else -> triangle(stack, g, e0, e1, e2, b, c, a, true)
+            c.vy < b.vy -> triangle(stack, g, e0, e1, e2, c, b, a, e0, e1, e0, e2)
+            a.vy < c.vy -> triangle(stack, g, e0, e1, e2, b, a, c, e0, e1, e0, e2)
+            else -> triangle(stack, g, e0, e1, e2, b, c, a, e1, e0, e2, e0)
         }
     }
 
-    private fun triangle(s: SpanBuffer, g: Gradients, ttb: Edge, ttm: Edge, mtb: Edge, a: Vertex, b: Vertex, c: Vertex, leftSide: Boolean) {
+    private fun triangle(
+        s: SpanBuffer,
+        g: Gradients,
+        ttb: Edge,
+        ttm: Edge,
+        mtb: Edge,
+        a: Vertex,
+        b: Vertex,
+        c: Vertex,
+        e00: Edge,
+        e01: Edge,
+        e10: Edge,
+        e11: Edge
+    ) {
         if (c.vy < 0 || a.vy >= height) return
         if (ttb.configure(g, a, c) > 0) {
             if (ttm.configure(g, a, b) > 0 && ttm.y1 < height) {
-                if (leftSide) {
-                    s.add(material, g, ttm, ttb, ttm)
-                } else {
-                    s.add(material, g, ttb, ttm, ttm)
-                }
+                s.add(material, g, e00, e01, ttm)
             }
             if (mtb.configure(g, b, c) > 0 && mtb.y1 < height) {
-                if (leftSide) {
-                    s.add(material, g, mtb, ttb, mtb)
-                } else {
-                    s.add(material, g, ttb, mtb, mtb)
-                }
+                s.add(material, g, e10, e11, mtb)
             }
         }
     }

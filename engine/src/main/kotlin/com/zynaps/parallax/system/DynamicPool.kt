@@ -18,18 +18,17 @@
  */
 package com.zynaps.parallax.system
 
-import com.zynaps.parallax.math.Scalar.max
 import java.util.function.Supplier
 
 class DynamicPool<T>(initialCapacity: Int = 16, private val generator: Supplier<T>) {
-    private var elements = generate(generator, initialCapacity)
+    private var elements = generate(generator, initialCapacity.coerceAtLeast(16))
+    private val simpleName = elements[0]!!::class.simpleName
     private var index = 0
 
     fun next(): T {
         if (index == elements.size) {
-            val grow = max(1, elements.size shr 1)
-            Logger.debug("${this.hashCode()} pooling $grow new ${elements[0]!!::class.simpleName} instances")
-            elements += generate(generator, grow)
+            Logger.debug("${this.hashCode()}: pooling ${elements.size} new instances of <$simpleName>")
+            elements += generate(generator, elements.size)
         }
         return elements[index++]
     }

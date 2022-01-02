@@ -20,11 +20,11 @@ package com.zynaps.parallax.core
 
 internal class Fragment {
     var leftX = 0F
-    private var rightX = 0F
-    private var leftZ = 0F
+    var rightX = 0F
+    var leftXStep = 0F
+    var rightXStep = 0F
 
-    private var leftXStep = 0F
-    private var rightXStep = 0F
+    private var leftZ = 0F
     private var leftZStep = 0F
 
     var _1OverZdX = 0F

@@ -53,11 +53,11 @@ class Visualizer(val width: Int, val height: Int) {
         device.clear(backgroundColor)
         sceneGraph.render(camera, device)
 
-        lights.forEach { it.render(sceneGraph) }
-        lightProcessor.lights = lights
-        lightProcessor.camera = camera
-        lightProcessor.ambientRGB = ambientColor
-        lightProcessor.apply()
+//        lights.forEach { it.render(sceneGraph) }
+//        lightProcessor.lights = lights
+//        lightProcessor.camera = camera
+//        lightProcessor.ambientRGB = ambientColor
+//        lightProcessor.apply()
 
 //        glowProcessor.source = device.emissiveBuffer
 //        glowProcessor.destination = device.colorBuffer
@@ -67,6 +67,6 @@ class Visualizer(val width: Int, val height: Int) {
 //        blurFilter.steps = 1
 //        blurFilter.apply()
 
-        gammaFilter.apply()
+//        gammaFilter.apply()
     }
 }

@@ -40,7 +40,7 @@ class DynamicArray<T>(initialCapacity: Int = 16) {
 
     fun add(element: T): Int {
         if (index == elements.size) {
-            Logger.debug("expanding array ${this.hashCode()} to ${2 * elements.size} elements")
+            Logger.debug("${this.hashCode()}: expanding array capacity by ${elements.size}")
             elements += generate(elements.size)
         }
         elements[index++] = element

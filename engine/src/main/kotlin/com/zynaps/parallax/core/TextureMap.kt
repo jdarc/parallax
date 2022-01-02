@@ -29,7 +29,7 @@ class TextureMap private constructor(buffer: RenderBuffer) {
     val width = buffer.width
     val height = buffer.size / width
 
-    private val siz8 = width.shl(8).toFloat()
+    private val siz8 = width.shl(8).toFloat() - 256f
     private val bits = Scalar.log2(width.toFloat()).toInt()
     private val mask = width * height - 1
     private val data = pack(buffer)

@@ -46,9 +46,10 @@ internal class Edge {
     fun configure(g: Gradients, a: Vertex, b: Vertex): Int {
         y1 = max(0, ceil(a.vy))
         val height = ceil(b.vy) - y1
-        y2 = y1 + height
 
         if (height > 0) {
+            y2 = y1 + height
+
             val yPreStep = y1 - a.vy
             xStep = (b.vx - a.vx) / (b.vy - a.vy)
             x = yPreStep * xStep + a.vx

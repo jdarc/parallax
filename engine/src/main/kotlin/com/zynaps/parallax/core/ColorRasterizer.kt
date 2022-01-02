@@ -39,16 +39,15 @@ internal class ColorRasterizer : Rasterizer {
     }
 
     private fun genTasks(device: Device) = (0 until device.height).map { y ->
+        val yy = y.toFloat()
+        val colrBuffer = device.colorBuffer
+        val specBuffer = device.specularBuffer
+        val emitBuffer = device.emissiveBuffer
+        val normBuffer = device.normalBuffer
+        val offset = y * device.width
+        val buffers = device.spanBuffers.map { it[y] }
         Callable {
-            val yy = y.toFloat()
-            val colrBuffer = device.colorBuffer
-            val specBuffer = device.specularBuffer
-            val emitBuffer = device.emissiveBuffer
-            val normBuffer = device.normalBuffer
-            val offset = y * device.width
-            val spanBuffers = device.spanBuffers
-            spanBuffers.forEach {
-                val spanBuffer = it[y]
+            buffers.forEach { spanBuffer ->
                 for (i in 0 until spanBuffer.size) {
                     val fragment = spanBuffer[i]
                     val diff = fragment.material.diffuse
