@@ -18,24 +18,19 @@
  */
 package com.zynaps.parallax.core
 
-class RenderBuffer private constructor(val data: IntArray, val width: Int) {
+class Raster private constructor(val data: IntArray, val width: Int, val height: Int) {
     val size = data.size
-    val height = if (width == 0) 0 else size / width
 
     operator fun get(index: Int) = data[index]
-    operator fun set(index: Int, value: Int) {
-        data[index] = value
-    }
+    operator fun set(index: Int, value: Int) { data[index] = value }
 
     fun fill(value: Int) = data.fill(value)
 
-    fun copyInto(dst: IntArray, offset: Int = 0, start: Int = 0, end: Int = data.size) {
-        data.copyInto(dst, offset, start, end)
-    }
-
     companion object {
-        val ZERO = RenderBuffer(IntArray(1), 0)
-        fun wrap(data: IntArray, scan: Int) = RenderBuffer(data, scan)
+        val ZERO = Raster(IntArray(1), 0, 0)
+
+        fun wrap(data: IntArray, scan: Int) = Raster(data, scan, if (scan == 0) 0 else data.size / scan)
+
         fun create(width: Int, height: Int) = wrap(IntArray(width * height), width)
     }
 }

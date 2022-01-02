@@ -30,7 +30,7 @@ class Material private constructor(
 ) {
 
     fun rma(map: BufferedImage) {
-        val modified = RenderBuffer.create(map.width, map.height)
+        val modified = Raster.create(map.width, map.height)
         for (y in 0 until map.height) {
             val v = y.toFloat() / map.height
             for (x in 0 until map.width) {

@@ -22,12 +22,12 @@ import com.zynaps.parallax.core.Color
 import com.zynaps.parallax.core.Color.blu
 import com.zynaps.parallax.core.Color.grn
 import com.zynaps.parallax.core.Color.red
-import com.zynaps.parallax.core.RenderBuffer
+import com.zynaps.parallax.core.Raster
 import com.zynaps.parallax.math.Scalar.clamp
 import com.zynaps.parallax.system.Parallel
 import kotlin.math.exp
 
-class ExposureFilter(src: RenderBuffer = RenderBuffer.ZERO, dst: RenderBuffer = src) : Filter {
+class ExposureFilter(src: Raster = Raster.ZERO, dst: Raster = src) : Filter {
 
     override var source = src
         set(value) {

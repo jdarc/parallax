@@ -22,14 +22,14 @@ import com.zynaps.parallax.core.Color
 import com.zynaps.parallax.core.Color.blu
 import com.zynaps.parallax.core.Color.grn
 import com.zynaps.parallax.core.Color.red
-import com.zynaps.parallax.core.RenderBuffer
+import com.zynaps.parallax.core.Raster
 import com.zynaps.parallax.math.Scalar.clamp
 import com.zynaps.parallax.math.Scalar.max
 import com.zynaps.parallax.math.Scalar.min
 import com.zynaps.parallax.system.Parallel
 import java.util.stream.IntStream
 
-class BlurFilter(src: RenderBuffer = RenderBuffer.ZERO, dst: RenderBuffer = src) : Filter {
+class BlurFilter(src: Raster = Raster.ZERO, dst: Raster = src) : Filter {
 
     private var tmp = IntArray(0)
 

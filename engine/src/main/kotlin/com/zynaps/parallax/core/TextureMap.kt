@@ -25,7 +25,7 @@ import com.zynaps.parallax.core.Color.red
 import com.zynaps.parallax.math.Scalar
 import java.awt.image.BufferedImage
 
-class TextureMap private constructor(buffer: RenderBuffer) {
+class TextureMap private constructor(buffer: Raster) {
     val width = buffer.width
     val height = buffer.size / width
 
@@ -56,7 +56,7 @@ class TextureMap private constructor(buffer: RenderBuffer) {
         return (sum.ushr(24) and 0xFF00FF00 or (sum and 0xFF00FF)).toInt()
     }
 
-    private fun pack(pixels: RenderBuffer): LongArray {
+    private fun pack(pixels: Raster): LongArray {
         val data = pixels.data.map(Int::toLong).map { alpha(it).shl(48) or grn(it).shl(32) or red(it).shl(16) or blu(it) }
         return data.mapIndexed { index, value -> value or data[mask and index + width].shl(8) }.toLongArray()
     }
@@ -67,11 +67,11 @@ class TextureMap private constructor(buffer: RenderBuffer) {
         @Throws(IllegalArgumentException::class)
         fun create(image: BufferedImage): TextureMap {
             val data = image.getRGB(0, 0, image.width, image.height, null, 0, image.height)
-            return create(RenderBuffer.wrap(data, image.width))
+            return create(Raster.wrap(data, image.width))
         }
 
         @Throws(IllegalArgumentException::class)
-        fun create(buffer: RenderBuffer): TextureMap {
+        fun create(buffer: Raster): TextureMap {
             if (buffer.width != buffer.height || !Scalar.isPot(buffer.width)) {
                 throw IllegalArgumentException("dimensions not supported")
             }

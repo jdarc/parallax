@@ -18,7 +18,7 @@
  */
 package com.zynaps.parallax.postfx
 
-import com.zynaps.parallax.core.RenderBuffer
+import com.zynaps.parallax.core.Raster
 import com.zynaps.parallax.filters.BlurFilter
 import com.zynaps.parallax.filters.FilterOp
 import com.zynaps.parallax.filters.GammaFilter
@@ -27,20 +27,20 @@ import com.zynaps.parallax.system.Logger
 
 class GlowProcessor : PostProcessor {
 
-    private var tmp = RenderBuffer.create(0, 0)
+    private var tmp = Raster.create(0, 0)
     private val blurFilter = BlurFilter()
     private val gammaFilter = GammaFilter()
     private val resampleFilter = ResampleFilter()
 
-    var source: RenderBuffer = RenderBuffer.ZERO
-    var destination: RenderBuffer = RenderBuffer.ZERO
+    var source: Raster = Raster.ZERO
+    var destination: Raster = Raster.ZERO
 
     override fun apply() {
         val glowWidth = source.width / 2
         val glowHeight = (glowWidth * source.height) / source.width
         if (tmp.width != glowWidth || tmp.height != glowHeight) {
             Logger.debug("created glow buffer ${glowWidth}x${glowHeight}")
-            tmp = RenderBuffer.create(glowWidth, glowHeight)
+            tmp = Raster.create(glowWidth, glowHeight)
         }
 
         resampleFilter.source = source

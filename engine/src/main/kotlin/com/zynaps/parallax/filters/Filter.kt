@@ -18,10 +18,10 @@
  */
 package com.zynaps.parallax.filters
 
-import com.zynaps.parallax.core.RenderBuffer
+import com.zynaps.parallax.core.Raster
 
 interface Filter {
-    var source: RenderBuffer
-    var destination: RenderBuffer
+    var source: Raster
+    var destination: Raster
     fun apply()
 }

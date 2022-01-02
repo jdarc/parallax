@@ -61,7 +61,7 @@ class Viewer(private val sceneGraph: SceneGraph) : JComponent() {
         camera.moveTo(50.0F, 0.0F, 0.0F)
         controller = OrbitController(camera)
 
-        load(File("C:\\Users\\Jean\\Projects\\Kotlin\\Parallax\\demos\\src\\main\\resources\\models\\attack-droid.obj"))
+        load(File("/home/jean/Projects/kotlin/parallax/demos/src/main/resources/models/axe.obj"))
 
         addComponentListener(object : ComponentAdapter() {
             override fun componentResized(e: ComponentEvent) {

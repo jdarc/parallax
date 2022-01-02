@@ -22,12 +22,17 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 
 object Scalar {
-    const val PI = 3.1415927F
-    const val TAU = 6.2831855F
-    const val HALF_PI = 1.5707964F
-    const val EPSILON = 0.00000001F
+    const val ONE = 1.0f
+    const val HALF = 0.5f
+    const val ZERO = 0.0f
+    const val PI = 3.1415927f
+    const val TAU = 6.2831855f
+    const val HALF_PI = 1.5707964f
+    const val EPSILON = 0.00000001f
 
     private const val LARGE = 1073741823.0
+
+    fun float(x: Number) = x.toFloat()
 
     fun equals(a: Float, b: Float, epsilon: Float = EPSILON) = !(a - b).isNaN() && abs(a - b) <= epsilon
 
@@ -51,7 +56,7 @@ object Scalar {
 
     fun sqr(value: Float) = value * value
 
-    fun invSqrt(n: Float) = 1F / sqrt(n)
+    fun invSqrt(n: Float) = ONE / sqrt(n)
 
     fun hypot(x: Float, y: Float) = sqrt(x * x + y * y)
 
@@ -61,9 +66,9 @@ object Scalar {
 
     fun hypot(vararg values: Float) = sqrt(values.map { it * it }.sum())
 
-    fun toRadians(degrees: Float) = degrees * PI / 180.0F
+    fun toRadians(degrees: Float) = degrees * PI / 180
 
-    fun toDegrees(radians: Float) = radians * 180.0F / PI
+    fun toDegrees(radians: Float) = radians * 180 / PI
 
     fun round(x: Float) = x.roundToInt()
 

@@ -18,7 +18,7 @@
  */
 package com.zynaps.parallax.filters
 
-import com.zynaps.parallax.core.RenderBuffer
+import com.zynaps.parallax.core.Raster
 import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.clamp
 import com.zynaps.parallax.math.Scalar.min
@@ -28,7 +28,7 @@ import com.zynaps.parallax.system.Parallel.F
 import java.util.concurrent.Callable
 import kotlin.math.pow
 
-class GammaFilter(src: RenderBuffer = RenderBuffer.ZERO, dst: RenderBuffer = src) : Filter {
+class GammaFilter(src: Raster = Raster.ZERO, dst: Raster = src) : Filter {
 
     override var source = src
         set(value) {

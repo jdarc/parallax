@@ -18,6 +18,7 @@
  */
 package com.zynaps.parallax.core
 
+import com.zynaps.parallax.math.Scalar.ONE
 import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.max
 import com.zynaps.parallax.math.Scalar.min
@@ -30,7 +31,7 @@ internal class ColorRasterizer : Rasterizer {
 
     override fun clear(device: Device, color: Int, depth: Float) {
         device.colorBuffer.fill(color)
-        device.emissiveBuffer.fill(0x000000)
+        device.glowBuffer.fill(0x000000)
     }
 
     override fun render(device: Device) {
@@ -42,7 +43,7 @@ internal class ColorRasterizer : Rasterizer {
         val yy = y.toFloat()
         val colrBuffer = device.colorBuffer
         val specBuffer = device.specularBuffer
-        val emitBuffer = device.emissiveBuffer
+        val emitBuffer = device.glowBuffer
         val normBuffer = device.normalBuffer
         val offset = y * device.width
         val buffers = device.spanBuffers.map { it[y] }
@@ -68,8 +69,8 @@ internal class ColorRasterizer : Rasterizer {
                     var tvOverZ = fragment.tvOverZdX * preStep + fragment.getTvOverZ(delta)
                     for (x in offset + x1 until offset + x2) {
                         if (z1 <= device.depthBuffer[x]) {
-                            val oz = 1F / _1OverZ
-                            val nz = 511F * oz
+                            val oz = ONE / _1OverZ
+                            val nz = 511.0f * oz
                             val tu = tuOverZ * oz
                             val tv = tvOverZ * oz
                             colrBuffer[x] = diff.sample(tu, tv)
@@ -92,9 +93,9 @@ internal class ColorRasterizer : Rasterizer {
 
     private companion object {
         private fun packNormals(x: Float, y: Float, z: Float): Int {
-            val r = (x + 512F).toInt()
-            val g = (y + 512F).toInt()
-            val b = (z + 512F).toInt()
+            val r = (x + 512.0f).toInt()
+            val g = (y + 512.0f).toInt()
+            val b = (z + 512.0f).toInt()
             return r.shl(20) or g.shl(10) or b
         }
     }

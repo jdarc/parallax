@@ -19,16 +19,19 @@
 package com.zynaps.parallax.core
 
 import com.zynaps.parallax.math.Matrix4
+import com.zynaps.parallax.math.Scalar.HALF
+import com.zynaps.parallax.math.Scalar.ONE
+import com.zynaps.parallax.math.Scalar.ZERO
 import com.zynaps.parallax.math.Vector2
 import com.zynaps.parallax.math.Vector3
 
 internal data class Vertex(
-    var vx: Float = 0F, var vy: Float = 0F, var vz: Float = 0F, var vw: Float = 0F,
-    var nx: Float = 0F, var ny: Float = 0F, var nz: Float = 0F,
-    var tu: Float = 0F, var tv: Float = 0F
+    var vx: Float = ZERO, var vy: Float = ZERO, var vz: Float = ZERO, var vw: Float = ZERO,
+    var nx: Float = ZERO, var ny: Float = ZERO, var nz: Float = ZERO,
+    var tu: Float = ZERO, var tv: Float = ZERO
 ) {
 
-    constructor(v: Vector3, n: Vector3, t: Vector2) : this(v.x, v.y, v.z, 0F, n.x, n.y, n.z, t.x, t.y)
+    constructor(v: Vector3, n: Vector3, t: Vector2) : this(v.x, v.y, v.z, ZERO, n.x, n.y, n.z, t.x, t.y)
 
     fun set(other: Vertex) {
         vx = other.vx
@@ -73,10 +76,10 @@ internal data class Vertex(
     }
 
     fun scale(width: Int, height: Int) {
-        vw = 1F / vw
-        vx = 0.5F * (vx * vw + 1F) * width
-        vy = 0.5F * (1F - vy * vw) * height
-        vz = 0.5F * (vz * vw + 1F)
+        vw = ONE / vw
+        vx = HALF * (vx * vw + ONE) * width
+        vy = HALF * (ONE - vy * vw) * height
+        vz = HALF * (vz * vw + ONE)
         nx *= vw
         ny *= vw
         nz *= vw

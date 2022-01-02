@@ -35,9 +35,7 @@ class Bitmap(val image: BufferedImage) {
 
     operator fun get(x: Int, y: Int) = data[y * width + x]
 
-    operator fun set(x: Int, y: Int, argb: Int) {
-        data[y * width + x] = argb
-    }
+    operator fun set(x: Int, y: Int, argb: Int) { data[y * width + x] = argb }
 
     fun draw(g: Graphics2D, x: Int = 0, y: Int = 0, width: Int = image.width, height: Int = image.height) {
         val transform = AffineTransform.getScaleInstance(width.toDouble() / this.width, height.toDouble() / this.height)

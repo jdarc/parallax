@@ -19,14 +19,14 @@
 package com.zynaps.parallax.filters
 
 import com.zynaps.parallax.core.Color
-import com.zynaps.parallax.core.RenderBuffer
-import com.zynaps.parallax.core.RenderBuffer.Companion.ZERO
+import com.zynaps.parallax.core.Raster
+import com.zynaps.parallax.core.Raster.Companion.ZERO
 import com.zynaps.parallax.math.Scalar.ceil
 import com.zynaps.parallax.math.Scalar.clamp
 import com.zynaps.parallax.math.Scalar.min
 import com.zynaps.parallax.system.Parallel
 
-class ResampleFilter(src: RenderBuffer = ZERO, dst: RenderBuffer = src, var op: FilterOp = FilterOp.SOURCE) : Filter {
+class ResampleFilter(src: Raster = ZERO, dst: Raster = src, var op: FilterOp = FilterOp.SOURCE) : Filter {
 
     override var source = src
         set(value) {
@@ -53,7 +53,7 @@ class ResampleFilter(src: RenderBuffer = ZERO, dst: RenderBuffer = src, var op: 
         Parallel.invoke(*cb.toTypedArray())
     }
 
-    private fun block(sx1: Int, sy1: Int, sx2: Int, sy2: Int, src: RenderBuffer, dst: RenderBuffer, op: FilterOp) {
+    private fun block(sx1: Int, sy1: Int, sx2: Int, sy2: Int, src: Raster, dst: Raster, op: FilterOp) {
         val xRatio = (src.width.shl(12) + 2048) / dst.width
         val yRatio = (src.height.shl(12) + 2048) / dst.height
         for (i in sy1 until sy2) {
