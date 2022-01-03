@@ -31,9 +31,9 @@ class Mesh(val vertexBuffer: FloatArray, val indexBuffer: IntArray) : Geometry {
 
     override val triangleCount get() = indexBuffer.size / 3
 
-    override val localBounds = (vertexBuffer.indices step 8).fold(Aabb(), { dst, it ->
+    override val localBounds = (vertexBuffer.indices step 8).fold(Aabb()) { dst, it ->
         dst.aggregate(vertexBuffer[it], vertexBuffer[it + 1], vertexBuffer[it + 2])
-    })
+    }
 
     override fun render(device: Device) {
         device.draw(vertexBuffer, indexBuffer, indexBuffer.size / 3)

@@ -19,8 +19,11 @@
 package com.zynaps.parallax.core
 
 internal class Fragment {
-    var leftX = 0F
-    var rightX = 0F
+    var y = 0
+
+    private var leftX = 0F
+    private var rightX = 0F
+
     var leftXStep = 0F
     var rightXStep = 0F
 
@@ -49,22 +52,10 @@ internal class Fragment {
     private var tuOverZStep = 0F
     private var tvOverZStep = 0F
 
-    var leftY = 0
-    var rightY = 0
-
     var material = Material.DEFAULT
 
     fun configure(m: Material, g: Gradients, l: Edge, r: Edge): Fragment {
-        rightY = r.y1
-        rightX = r.x
-        rightXStep = r.xStep
-
-        leftY = l.y1
-        leftX = l.x
-        leftXStep = l.xStep
-
-        leftZ = l.z
-        leftZStep = l.zStep
+        material = m
 
         _1OverZdX = g._1OverZdX
         _zOverZdX = g._zOverZdX
@@ -74,12 +65,25 @@ internal class Fragment {
         tuOverZdX = g.tuOverZdX
         tvOverZdX = g.tvOverZdX
 
-        _1OverZ = l._1OverZ
-        nxOverZ = l.nxOverZ
-        nyOverZ = l.nyOverZ
-        nzOverZ = l.nzOverZ
-        tuOverZ = l.tuOverZ
-        tvOverZ = l.tvOverZ
+        y = r.y1
+
+        rightX = r.x
+        rightXStep = r.xStep
+
+        val diff = (r.y1 - l.y1).toFloat()
+
+        leftX = l.x + l.xStep * diff
+        leftXStep = l.xStep
+
+        leftZ = l.z + l.zStep * diff
+        leftZStep = l.zStep
+
+        _1OverZ = l._1OverZ + l._1OverZStep * diff
+        nxOverZ = l.nxOverZ + l.nxOverZStep * diff
+        nyOverZ = l.nyOverZ + l.nyOverZStep * diff
+        nzOverZ = l.nzOverZ + l.nzOverZStep * diff
+        tuOverZ = l.tuOverZ + l.tuOverZStep * diff
+        tvOverZ = l.tvOverZ + l.tvOverZStep * diff
 
         _1OverZStep = l._1OverZStep
         nxOverZStep = l.nxOverZStep
@@ -88,17 +92,16 @@ internal class Fragment {
         tuOverZStep = l.tuOverZStep
         tvOverZStep = l.tvOverZStep
 
-        material = m
         return this
     }
 
-    fun getLeftX(delta: Float) = leftXStep * delta + leftX
-    fun getRightX(delta: Float) = rightXStep * delta + rightX
-    fun getZ(delta: Float) = leftZStep * delta + leftZ
-    fun get1OverZ(delta: Float) = _1OverZStep * delta + _1OverZ
-    fun getNxOverZ(delta: Float) = nxOverZStep * delta + nxOverZ
-    fun getNyOverZ(delta: Float) = nyOverZStep * delta + nyOverZ
-    fun getNzOverZ(delta: Float) = nzOverZStep * delta + nzOverZ
-    fun getTuOverZ(delta: Float) = tuOverZStep * delta + tuOverZ
-    fun getTvOverZ(delta: Float) = tvOverZStep * delta + tvOverZ
+    fun getLeftX(delta: Float) = leftX + leftXStep * delta
+    fun getRightX(delta: Float) = rightX + rightXStep * delta
+    fun getZ(delta: Float) = leftZ + leftZStep * delta
+    fun get1OverZ(delta: Float) = _1OverZ + _1OverZStep * delta
+    fun getNxOverZ(delta: Float) = nxOverZ + nxOverZStep * delta
+    fun getNyOverZ(delta: Float) = nyOverZ + nyOverZStep * delta
+    fun getNzOverZ(delta: Float) = nzOverZ + nzOverZStep * delta
+    fun getTuOverZ(delta: Float) = tuOverZ + tuOverZStep * delta
+    fun getTvOverZ(delta: Float) = tvOverZ + tvOverZStep * delta
 }

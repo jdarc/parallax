@@ -88,7 +88,7 @@ class WavefrontReader {
     private fun loadTexturesAsync(loader: ResourceLoader, texturesToLoad: List<TextureLoadHandler>) {
         Thread {
             texturesToLoad.forEach {
-                it.handler(textureCache.getOrPut(it.filename, { loadImageAndScale(loader, it) }))
+                it.handler(textureCache.getOrPut(it.filename) { loadImageAndScale(loader, it) })
             }
         }.start()
     }

@@ -35,7 +35,7 @@ open class BranchNode(transform: Matrix4 = Matrix4.IDENTITY) : Node(transform) {
 
     operator fun get(index: Int) = children[index]
 
-    override val localBounds get() = children.fold(Aabb(), { dst, src -> dst.aggregate(src.localBounds) })
+    override val localBounds get() = children.fold(Aabb()) { dst, src -> dst.aggregate(src.localBounds) }
 
     override fun traverseUp(visitor: (Node) -> Unit) {
         children.forEach { it.traverseUp(visitor) }

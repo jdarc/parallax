@@ -47,7 +47,7 @@ class Assembler {
 
     fun groups() = triangleGroups.keys.toTypedArray()
 
-    fun groupByName(name: String): List<Triangle> = triangleGroups.getOrElse(name, { emptyList() })
+    fun groupByName(name: String): List<Triangle> = triangleGroups.getOrElse(name) { emptyList() }
 
     fun vertex(v: Vector3) = vertex(v.x, v.y, v.z)
     fun vertex(data: Array<Float>) = vertex(data[0], data[1], data[2])
@@ -70,7 +70,7 @@ class Assembler {
 
     fun triangle(a: Int, b: Int, c: Int): Triangle {
         val triangle = Triangle(a, b, c)
-        triangleGroups.getOrPut(group, { mutableListOf() }).add(triangle)
+        triangleGroups.getOrPut(group) { mutableListOf() }.add(triangle)
         return triangle
     }
 
@@ -97,7 +97,7 @@ class Assembler {
 
     private fun groupByMaterial(): MutableMap<Material, Mesh> {
         val buckets = HashMap<Material, MutableList<Triangle>>()
-        triangleGroups.values.flatten().forEach { buckets.getOrPut(it.material, { ArrayList<Triangle>() }).add(it) }
+        triangleGroups.values.flatten().forEach { buckets.getOrPut(it.material) { ArrayList<Triangle>() }.add(it) }
 
         val groups = HashMap<Material, Mesh>()
         for ((key, value) in buckets) {

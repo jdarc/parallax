@@ -40,25 +40,24 @@ internal class ColorRasterizer : Rasterizer {
     }
 
     private fun genTasks(device: Device) = (0 until device.height).map { y ->
-        val yy = y.toFloat()
-        val colrBuffer = device.colorBuffer
-        val specBuffer = device.specularBuffer
-        val emitBuffer = device.glowBuffer
-        val normBuffer = device.normalBuffer
-        val offset = y * device.width
-        val buffers = device.spanBuffers.map { it[y] }
+        val spans = device.spanBuffers.map { it[y] }.toTypedArray()
         Callable {
-            buffers.forEach { spanBuffer ->
-                for (i in 0 until spanBuffer.size) {
-                    val fragment = spanBuffer[i]
+            val diffBuffer = device.colorBuffer
+            val specBuffer = device.specularBuffer
+            val emitBuffer = device.glowBuffer
+            val normBuffer = device.normalBuffer
+            val offset = y * device.width
+            spans.forEach { fragments ->
+                for (i in 0 until fragments.size) {
+                    val fragment = fragments[i]
+                    val delta = y.toFloat() - fragment.y
                     val diff = fragment.material.diffuse
                     val spec = fragment.material.specular
                     val emit = fragment.material.emissive
                     val glos = fragment.material.glossiness shl 24
-                    val delta = yy - fragment.leftY
                     val lx = fragment.getLeftX(delta)
                     val x1 = max(0, ceil(lx))
-                    val x2 = min(device.width, ceil(fragment.getRightX(yy - fragment.rightY)))
+                    val x2 = min(device.width, ceil(fragment.getRightX(delta)))
                     val preStep = x1 - lx
                     var z1 = fragment._zOverZdX * preStep + fragment.getZ(delta)
                     var _1OverZ = fragment._1OverZdX * preStep + fragment.get1OverZ(delta)
@@ -73,7 +72,7 @@ internal class ColorRasterizer : Rasterizer {
                             val nz = 511.0f * oz
                             val tu = tuOverZ * oz
                             val tv = tvOverZ * oz
-                            colrBuffer[x] = diff.sample(tu, tv)
+                            diffBuffer[x] = diff.sample(tu, tv)
                             specBuffer[x] = spec.sample(tu, tv) or glos
                             emitBuffer[x] = emit.sample(tu, tv)
                             normBuffer[x] = packNormals(nxOverZ * nz, nyOverZ * nz, nzOverZ * nz)

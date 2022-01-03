@@ -41,7 +41,7 @@ class Model(val name: String, parts: Map<Material, Mesh> = HashMap()) {
     operator fun get(material: Material) = parts[material]
 
     fun add(material: Material, mesh: Mesh) {
-        parts.getOrPut(material, { ArrayList() }).add(mesh)
+        parts.getOrPut(material) { ArrayList() }.add(mesh)
         localBounds.aggregate(mesh.localBounds)
     }
 

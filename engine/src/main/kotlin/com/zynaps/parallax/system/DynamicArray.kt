@@ -19,12 +19,10 @@
 package com.zynaps.parallax.system
 
 class DynamicArray<T>(initialCapacity: Int = 16) {
-    private var elements = generate(initialCapacity)
+    private var elements = generate(initialCapacity.coerceAtLeast(16))
     private var index = 0
 
     val size get() = index
-
-    fun isEmpty() = index == 0
 
     operator fun get(index: Int) = elements[index]
 
